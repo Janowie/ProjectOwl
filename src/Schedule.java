@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-// test
+// test 2
 public class Schedule {
 	ArrayList<Group> arrayGroups = new ArrayList<Group>();
 	int index = 0;
