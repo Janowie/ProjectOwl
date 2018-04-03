@@ -1,22 +1,10 @@
-package src;
-
 import java.io.*;
 import java.text.*;
 import java.util.Calendar;
 import java.util.Date;
 @SuppressWarnings("serial")
 public class officeWorker extends User {
-<<<<<<< HEAD
-	
-	
-	
-	
-=======
-	
-	
-	
-	
->>>>>>> 7e9b9bd82263dbe262fb688b3528f2fd412dd8b2
+
 	public officeWorker(String firstName, String lastName, String emailAddress) {
 		super(firstName, lastName, emailAddress);
 	}
