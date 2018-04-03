@@ -1,10 +1,15 @@
 import java.io.*;
-public class officeWorker {
-	String name;
+import java.text.*;
+import java.util.Calendar;
+import java.util.Date;
+@SuppressWarnings("serial")
+public class officeWorker extends User {
 	
 	
-	public officeWorker(String newName) {
-		name = newName;
+	
+	
+	public officeWorker(String firstName, String lastName, String emailAddress) {
+		super(firstName, lastName, emailAddress);
 	}
 	
 	//		SAVE GROUP		//
@@ -15,7 +20,7 @@ public class officeWorker {
 			out.writeObject(group);
 			out.close();
 			fileOut.close();
-			System.out.println("Saved successfully by " + this.name);			
+			System.out.println("Saved successfully by " + this.firstName);			
 		}
 		catch (IOException i) {
 			i.printStackTrace();
@@ -32,7 +37,7 @@ public class officeWorker {
 			loadedGroup = (Group) in.readObject();
 			in.close();
 			fileIn.close();
-			System.out.println("Loaded successfully by " + this.name);
+			System.out.println("Loaded successfully by " + this.firstName);
 			return loadedGroup;
 		}
 	  catch (IOException i) {
@@ -64,10 +69,58 @@ public class officeWorker {
 	
 	
 	//		ADD DETAILS		//
-	public void addDetails(Group group, String gTime, String gDay, String gRoom) {
+	public void addDetails(String teachersName, Group group, String gTime, String gDay, int gDuration, String gRoom) {
+		group.teacherName = teachersName;
 		group.time = gTime;
 		group.day = gDay;
+		group.duration = gDuration;
 		group.room = gRoom;
+	}
+	
+	
+	//		SET DATE		//
+	
+	//Skusit ako lambdu
+	private int weeksToDays(int week) {
+		int days = 0;
+		days = week*7;
+		return days;
+	}
+	
+	
+	private Date duration(Date beginningDate, int week) throws ParseException {
+		Date endDate = new Date();
+		Calendar c = Calendar.getInstance();
+		int days = weeksToDays(week);
+		
+		c.setTime(beginningDate);
+		c.add(Calendar.DAY_OF_MONTH, days);  
+		endDate = c.getTime();
+
+		return endDate;
+	}
+	
+	public void setDate(Group group, String timeInput, int duration) throws ParseException {
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		Date beginningDate = null;
+		Date endDate = new Date();
+		
+		try {
+			beginningDate = format.parse(timeInput);
+			group.beginning = beginningDate;
+		}
+		catch (ParseException e) {
+			System.out.println("Invalid date format");
+		}
+		
+		endDate = duration(beginningDate, duration);
+		
+		group.end = endDate;
+		
+		String beg = format.format(beginningDate);
+		String end = format.format(endDate);
+		
+		System.out.println("Course " + group.ID + " begins: " + beg + " ends: " + end);
 	}
 	
 	
