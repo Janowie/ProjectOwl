@@ -1,14 +1,18 @@
+package src;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.stream.Stream;
 
 // test 2
 public class Schedule {
 	ArrayList<Group> arrayGroups = new ArrayList<Group>();
 	int index = 0;
+	long difference = 0;
 	
 	public int numberOfGroups() throws IOException {
 		try (Stream<Path> files = Files.list(Paths.get("saves"))) {
@@ -18,8 +22,16 @@ public class Schedule {
 		}		
 	}
 	
+	// days left
+	public long dayLeft(Group group) {
+		Date today = new Date();
+		return group.end.getTime() - today.getTime();		
+	}
+	
+	
 	private void printGroup(Group group) {
-		System.out.println("Cas: " + group.time + "\nMiestnost: " + group.room + "\nDen: " + group.day);
+		difference = dayLeft(group);
+		System.out.println("Ucitel: " + group.teacherName + "\nCas: " + group.time + "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
 	}
 	
 	private void buildArrayGroups() {
@@ -64,12 +76,6 @@ public class Schedule {
 			}
 			i++;
 		}
-	}
-	
-	
-	
-	
-	
-	
+	}	
 	
 }
