@@ -1,12 +1,13 @@
-package gui;
+package src.gui;
 import java.io.IOException;
 import java.text.ParseException;
 
-import organization.Schedule;
-import users.Group;
-import users.Student;
-import users.Teacher;
-import users.officeWorker;
+import src.organization.FinishedLectureObserver;
+import src.organization.Schedule;
+import src.users.Group;
+import src.users.Student;
+import src.users.Teacher;
+import src.users.officeWorker;
 
 //import java.util.*;
 public class Projekt_Owl {
@@ -14,20 +15,20 @@ public class Projekt_Owl {
 	static int number = 0;
 
 	public static void main(String [] args) throws IOException, ParseException {
-		Student student1 = new Student("Forok", "K", "@", 0);
-		Student student2 = new Student("Dorok", "K", "@", 0);
-		Student student3 = new Student("Porok", "K", "@", 0);
-		Student student4 = new Student("Ferok", "K", "@", 0);
-		Student student5 = new Student("Derok", "K", "@", 0);
-		Student student6 = new Student("Perok", "K", "@", 0);
-		Student student7 = new Student("Lerok", "K", "@", 0);
-		Teacher teacher1 = new Teacher("ucitel Lerok", "K", "@", "SK11000000000054654");
+		src.users.Student student1 = new src.users.Student("Forok", "K", "@", 0);
+		src.users.Student student2 = new src.users.Student("Dorok", "K", "@", 0);
+		src.users.Student student3 = new src.users.Student("Porok", "K", "@", 0);
+		src.users.Student student4 = new src.users.Student("Ferok", "K", "@", 0);
+		src.users.Student student5 = new src.users.Student("Derok", "K", "@", 0);
+		src.users.Student student6 = new src.users.Student("Perok", "K", "@", 0);
+		src.users.Student student7 = new src.users.Student("Lerok", "K", "@", 0);
+		src.users.Teacher teacher1 = new src.users.Teacher("ucitel Lerok", "K", "@", "SK11000000000054654");
 		
-		officeWorker office = new officeWorker("Piater", "K", "@");
+		src.users.officeWorker office = new src.users.officeWorker("Piater", "K", "@");
 		
-		Group group1 = new Group(1);
-		Group group2 = new Group(2);
-		Schedule newSchedule = new Schedule();
+		src.users.Group group1 = new src.users.Group(1);
+		src.users.Group group2 = new src.users.Group(2);
+		src.organization.Schedule newSchedule = new src.organization.Schedule();
 		
 		office.addStudentToGroup(group1, student1);
 		office.addStudentToGroup(group1, student2);
@@ -54,6 +55,9 @@ public class Projekt_Owl {
 
 		
 		number = newSchedule.numberOfGroups();
+		
+		src.organization.Money money = new src.organization.Money();
+	    new FinishedLectureObserver(money);
 
 	}
 }
