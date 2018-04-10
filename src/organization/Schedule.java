@@ -1,4 +1,4 @@
-package src.organization;
+package organization;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Stream;
 
-import src.users.Group;
+import users.Group;
 
 // test 2
 public class Schedule {
-	ArrayList<src.users.Group> arrayGroups = new ArrayList<src.users.Group>();
+	ArrayList<users.Group> arrayGroups = new ArrayList<users.Group>();
 	int index = 0;
 	long difference = 0;
 	
@@ -25,13 +25,13 @@ public class Schedule {
 	}
 	
 	// days left
-	public long dayLeft(src.users.Group group) {
+	public long dayLeft(users.Group group) {
 		Date today = new Date();
 		return group.end.getTime() - today.getTime();		
 	}
 	
 	
-	private void printGroup(src.users.Group group) {
+	private void printGroup(users.Group group) {
 		difference = dayLeft(group);
 		System.out.println("\nCas: " + group.time + "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
 	}
@@ -44,7 +44,7 @@ public class Schedule {
 				try {
 					FileInputStream fileIn = new FileInputStream("saves/group" + ione +".ser");
 					ObjectInputStream in = new ObjectInputStream(fileIn);
-					arrayGroups.add((src.users.Group) in.readObject());
+					arrayGroups.add((users.Group) in.readObject());
 					in.close();
 					fileIn.close();
 				}

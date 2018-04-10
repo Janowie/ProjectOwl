@@ -1,4 +1,4 @@
-package src.organization;
+package organization;
 import java.util.*;
 
 public class Money {

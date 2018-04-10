@@ -1,4 +1,4 @@
-package src.organization;
+package organization;
 
 public class FinishedLectureObserver extends Observer {
 	Money money = new Money();

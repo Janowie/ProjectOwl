@@ -1,4 +1,4 @@
-package src.users;
+package users;
 
 public class Director extends officeWorker {
 	

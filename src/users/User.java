@@ -1,4 +1,4 @@
-package src.users;
+package users;
 
 //@SuppressWarnings("serial")
 

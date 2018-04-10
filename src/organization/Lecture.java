@@ -1,4 +1,4 @@
-package src.organization;
+package organization;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -6,11 +6,11 @@ import java.util.List;
 public abstract class Lecture {
 
 	Date lectureDate;
-	src.users.Teacher lectureTeacher;
+	users.Teacher lectureTeacher;
 	private List<Observer> observers = new ArrayList<Observer>();
 	
 	
-	Lecture(Date setDate, src.users.Teacher setTeacher) {
+	Lecture(Date setDate, users.Teacher setTeacher) {
 		this.lectureDate = setDate;
 		this.lectureTeacher = setTeacher;
 	}
