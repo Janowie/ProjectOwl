@@ -1,4 +1,4 @@
-package users;
+package src.users;
 
 @SuppressWarnings("serial")
 public class Student extends User implements java.io.Serializable {

@@ -1,4 +1,4 @@
-package users;
+package src.users;
 import java.util.*;
 
 @SuppressWarnings("serial")

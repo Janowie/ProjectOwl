@@ -1,6 +1,8 @@
-package organization;
+package src.organization;
+
+import src.users.Teacher;
 
 public abstract class Observer {
-	protected Lecture lecture;
-	public abstract void update();
+	   protected Teacher teacher;
+	   public abstract void update();
 }
