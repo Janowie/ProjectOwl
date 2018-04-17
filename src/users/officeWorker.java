@@ -3,22 +3,25 @@ import java.io.*;
 import java.text.*;
 import java.util.Calendar;
 import java.util.Date;
+
 @SuppressWarnings("serial")
 public class officeWorker extends User {
+	
+	private double salary = 0;
 
 	public officeWorker(String firstName, String lastName, String emailAddress) {
 		super(firstName, lastName, emailAddress);
 	}
 	
 	//		SAVE GROUP		//
-	public void groupSave(Group group) {
+	private void groupSave(Group group) {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("saves/group" + group.ID + ".ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);			
 			out.writeObject(group);
 			out.close();
 			fileOut.close();
-			System.out.println("Saved successfully by " + this.firstName);			
+			//System.out.println("Saved successfully by " + this.firstName);			
 		}
 		catch (IOException i) {
 			i.printStackTrace();
@@ -50,8 +53,14 @@ public class officeWorker extends User {
 	}
 
 	
-	//	DELETE GROUP		//
+	//		DELETE GROUP		//
 	public Group deleteGroup(Group group) {
+		
+		for (int i = 0; i < group.groupArrayTeachers.size(); i++) {
+			group.groupArrayTeachers.get(i).salary -= 10;
+			group.groupArrayTeachers.remove(i);
+		}
+		
 		File file = new File("saves/group" + group.ID + ".ser");
 		if(file.delete())
         {
@@ -62,18 +71,31 @@ public class officeWorker extends User {
             System.out.println("Failed to delete the file");
         }
 		group = null;
+		
 		return group;
 	}
 	
 	//		ADD TEACHER		//
-	public void addTeacherToGroup(Group group, Teacher newTeacher) {
+	public void setTeacher(Group group, Teacher newTeacher) {
 		group.groupArrayTeachers.add(newTeacher);
+		newTeacher.salary = newTeacher.getSalary() + 10;
+		newTeacher.notifyAllObservers();
+		this.groupSave(group);
+	}
+	
+	//		DELETE TEACHER		//
+	public void removeTeacher(Group group, Teacher deleteTeacher) {
+		group.groupArrayTeachers.remove(deleteTeacher);		
+		deleteTeacher.salary -= 10;
+		deleteTeacher.notifyAllObservers();
+		this.groupSave(group);
 	}
 	
 	//		ADD STUDENT		//
 	public void addStudentToGroup(Group group, Student student) {
 	group.groupArrayStudents.add(student);
 	student.groupNum = group.ID;
+	this.groupSave(group);
 	}	
 	
 	//		ADD DETAILS		//
@@ -82,8 +104,10 @@ public class officeWorker extends User {
 		group.day = gDay;
 		group.duration = gDuration;
 		group.room = gRoom;
+		group.dayOfTheWeek = group.setDayOfWeek();
+		
+		this.groupSave(group);
 	}
-	
 	
 	//		SET DATE		//	
 	WorkTime weeksToDays = (int week) -> week * 7;
@@ -121,13 +145,9 @@ public class officeWorker extends User {
 		String end = format.format(endDate);
 		
 		System.out.println("Course " + group.ID + " begins: " + beg + " ends: " + end);
-	}
-	
-	
-	
-	
-
-
+		
+		this.groupSave(group);
+	}	
 }
 
 interface WorkTime {

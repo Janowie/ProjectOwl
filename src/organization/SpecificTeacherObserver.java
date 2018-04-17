@@ -2,7 +2,9 @@ package src.organization;
 
 import src.users.Teacher;
 
-public class SpecificTeacherObserver extends Observer {
+
+@SuppressWarnings("serial")
+public class SpecificTeacherObserver extends Observer implements java.io.Serializable {
 
 	   public SpecificTeacherObserver(Teacher teacher){
 	      this.teacher = teacher;

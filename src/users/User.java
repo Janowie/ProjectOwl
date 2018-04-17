@@ -5,7 +5,7 @@ package src.users;
 @SuppressWarnings("serial")
 public abstract class User implements java.io.Serializable {
 
-	String firstName;
+	public String firstName;
 	String lastName;
 	String emailAddress;
 		

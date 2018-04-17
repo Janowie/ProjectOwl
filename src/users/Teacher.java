@@ -9,7 +9,7 @@ public class Teacher extends User {
 	
 	List<Group> groupsTaught = new ArrayList<Group>();
 	private List<Observer> observers = new ArrayList<Observer>();
-	private double salary = 0;
+	double salary = 0;
 	String IBAN;
 
 	public Teacher(String userFirstName, String userLastName, String userEmailAddres, String Iban) {
@@ -19,13 +19,7 @@ public class Teacher extends User {
 
 	public double getSalary() {
 	    return salary;
-	}
-
-	public void updateSalary(double addedSalary) {
-		salary =  salary + addedSalary;
-	    System.out.println("Salary increased to " + String.valueOf(getSalary()));
-	    notifyAllObservers();
-	}
+	}	
 
 	public void attach(Observer observer){
 	    observers.add(observer);		
@@ -35,7 +29,8 @@ public class Teacher extends User {
 	    for (Observer observer : observers) {
 	       observer.update();
 	    }
-	} 	
+	}
+	
 	
 	
 
