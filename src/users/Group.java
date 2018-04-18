@@ -20,7 +20,9 @@ public class Group implements java.io.Serializable, Functions {
 	public Date end = new Date();
 	long difference = 0;
 	
-	
+	public int getID() {
+		return this.ID;
+	}
 	
 	public void printArray() {
 		System.out.println("\n\nUcitel: " + groupArrayTeachers.get(1).firstName + "\nCas: " + this.time + "\nMiestnost: " + this.room + "\nDen: " + this.day + "\nTravnie do : " + this.end.toString() + "\nZiaci: ");

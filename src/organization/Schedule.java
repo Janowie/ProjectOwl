@@ -4,8 +4,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,24 +26,7 @@ public class Schedule {
 		}		
 	}
 	
-	//		CONSTRUCTOR		//
-	public Schedule() throws IOException {
-		index = numberOfGroups();
-	}
-	
-	//		DAYS LEFT		//
-	private long dayLeft(Group group) {
-		Date today = new Date();
-		return group.end.getTime() - today.getTime();		
-	}
-	
-	
-	private void printGroup(Group group) {
-		difference = dayLeft(group);
-		System.out.println("\nCas: " + group.time + "\nUcitel: " + group.groupArrayTeachers.get(0).firstName +  "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
-	}
-	
-	//		BILD ARRAY FROM ALL SAVED GROUPS		//
+	//	BILD ARRAY FROM ALL SAVED GROUPS		//
 	private void buildArrayGroups() {
 		if (index > 0) {
 			for (int i = 0; i < index; i++) {
@@ -70,6 +51,24 @@ public class Schedule {
 			System.out.println("No groups at all..");
 		}
 		
+	}
+	
+	//		CONSTRUCTOR		//
+	public Schedule() throws IOException {
+		index = numberOfGroups();
+		buildArrayGroups();
+	}
+	
+	//		DAYS LEFT		//
+	private long dayLeft(Group group) {
+		Date today = new Date();
+		return group.end.getTime() - today.getTime();		
+	}
+	
+	
+	private void printGroup(Group group) {
+		difference = dayLeft(group);
+		System.out.println("\nSkupina: " + group.getID() + "\nCas: " + group.time + "\nUcitel: " + group.groupArrayTeachers.get(0).firstName +  "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
 	}
 	
 	//		PRINT SCHEDULE DAY		//
@@ -97,20 +96,52 @@ public class Schedule {
 		}
 	}	
 	
-	//		PRINTING CURRENT WEEK SCHEDULE		//
+	//		PRINT CURRENT WEEK SCHEDULE		//
 	private int dayOfWeek(Date date) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		return c.get(Calendar.DAY_OF_WEEK);
 	}
 	
-	private boolean inBoundaries(Group group) {
+	private Date nextWeek(Date date) {
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(date); 
+		c.add(Calendar.DATE, 7);
+		date = c.getTime();
+		
+		return date;
+	}
+	
+	private Date boundaryStart(Date date) {
+		Date boundaryStartDate = new Date();
+		int dayOfWeek = dayOfWeek(date);
+		int decrement = dayOfWeek - 1;
+		Calendar c = Calendar.getInstance();
+		
+		c.setTime(date);
+		c.add(Calendar.DATE, -decrement);
+		boundaryStartDate = c.getTime();		
+		
+		return boundaryStartDate;
+	}
+	
+	private Date boundaryEnd(Date date) {
+		Date boundaryEndDate = new Date();
+		int dayOfWeek = dayOfWeek(date);
+		int increment = 7 - dayOfWeek;
+		Calendar c = Calendar.getInstance();
+		
+		c.setTime(date);
+		c.add(Calendar.DATE, increment);
+		boundaryEndDate = c.getTime();		
+		
+		return boundaryEndDate;
+	}
+	
+	private boolean inBoundaries(Group group, Date today) {
 		boolean inBoundaries = false;
-		Date today = new Date();
 		
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-		
-		if ((group.beginning.before(today) || group.beginning.equals(today)) && (group.end.after(today) || group.end.equals(today))) {
+		if ((group.beginning.before(boundaryStart(today)) || group.beginning.equals(boundaryStart(today))) && (group.end.after(boundaryEnd(today)) || group.end.equals(boundaryEnd(today)))) {
 			inBoundaries = true;
 		}
 		else {
@@ -122,12 +153,35 @@ public class Schedule {
 	
 	//	PRINT SCHEDULE WEEK		//
 	public void printScheduleWeek() {
-		boolean test = inBoundaries(arrayGroups.get(0));
+		int counter = 0;
+		Date today = new Date();
 		
-		if (test == true)
-			System.out.println("ANOO");
-		else 
-			System.out.println("NIEE");
+		for (int i = 0; i < arrayGroups.size(); i++) {
+			
+			if (inBoundaries(arrayGroups.get(i), today)) {
+				printGroup(arrayGroups.get(i));
+				counter++;
+			}
+			if (counter == 0) {
+				System.out.println("Nenasiel som skupinu na dany tyzden.");
+			}	
+		}
+		
+	}
+	
+	public void printScheduleNextWeek() {
+		int counter = 0;
+		Date today = new Date();
+		
+		for (int i = 0; i < arrayGroups.size(); i++) {
+			if (inBoundaries(arrayGroups.get(i), nextWeek(today))) {
+				printGroup(arrayGroups.get(i));
+				counter++;
+			}
+			if (counter == 0) {
+				System.out.println("Nenasiel som skupinu na dany tyzden.");
+			}	
+		}
 		
 	}
 	
