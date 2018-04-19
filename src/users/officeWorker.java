@@ -98,13 +98,28 @@ public class officeWorker extends User {
 	this.groupSave(group);
 	}	
 	
+	//	SET THE DAY OF WEEK		//
+	private int setDayOfWeek(Group group) {
+		String[] strDays = new String[] {"Pondelok", "Utorok", "Streda", "Stvrtok",
+		        "Piatok", "Sobota",  "Nedela" };
+		int dayOfWeek = 0;
+		for (int i = 0; i < strDays.length; i++) {
+			if (group.day.equals(strDays[i])) {
+				dayOfWeek = i + 1;
+			}
+		}
+		
+		return dayOfWeek;
+	
+	}
+	
 	//		ADD DETAILS		//
 	public void addDetails(Group group, String gTime, String gDay, int gDuration, String gRoom) {
 		group.time = gTime;
 		group.day = gDay;
 		group.duration = gDuration;
 		group.room = gRoom;
-		group.dayOfTheWeek = group.setDayOfWeek();
+		group.dayOfTheWeek = setDayOfWeek(group);
 		
 		this.groupSave(group);
 	}

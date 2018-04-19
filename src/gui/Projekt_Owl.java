@@ -65,19 +65,17 @@ public class Projekt_Owl {
 		office.addDetails(group6, "10:00-12:00", "Pondelok", 4, "L. 2.09");
 	
 		
-		office.setDate(group1, "28.03.2018", 5);
-		office.setDate(group2, "10.04.2018", 1);
-		office.setDate(group3, "20.03.2018", 2);
-		office.setDate(group4, "20.03.2018", 1);
-		office.setDate(group5, "01.04.2018", 4);
-		office.setDate(group6, "20.04.2018", 4);
+		office.setDate(group1, "01.04.2018", 5);
+		office.setDate(group2, "01.04.2018", 5);
+		office.setDate(group3, "01.04.2018", 5);
+		office.setDate(group4, "01.04.2018", 5);
+		office.setDate(group5, "01.04.2018", 5);
+		office.setDate(group6, "01.04.2018", 5);
 		
 		System.out.println("\n\n\n");
 		
 		schedule.printScheduleWeek();
-		student1.printScheduleWeek();
-		
-	
+
 
 	    	    	
 

@@ -151,21 +151,47 @@ public class Schedule {
 		return inBoundaries;
 	}
 	
+	private ArrayList<Group> reorderArrayList(ArrayList<Group> unordered) {
+		ArrayList<Group> orderedList = new ArrayList<Group>();
+		int index = 1;
+		int listSize = unordered.size();
+		
+		while (listSize > 0) {
+			for (int i = 0; i < unordered.size(); i++) {
+				if (unordered.get(i).dayOfTheWeek == index) {
+					orderedList.add(unordered.get(i));
+					listSize--;
+				}
+			}
+			index++;
+		}		
+		
+		return orderedList;
+	}
+	
 	//	PRINT SCHEDULE WEEK		//
 	public void printScheduleWeek() {
 		int counter = 0;
 		Date today = new Date();
+		ArrayList<Group> workList = new ArrayList<Group>();
 		
 		for (int i = 0; i < arrayGroups.size(); i++) {
 			
 			if (inBoundaries(arrayGroups.get(i), today)) {
-				printGroup(arrayGroups.get(i));
+				workList.add(arrayGroups.get(i));
 				counter++;
 			}
 			if (counter == 0) {
 				System.out.println("Nenasiel som skupinu na dany tyzden.");
 			}	
 		}
+		
+		workList = reorderArrayList(workList);
+		
+		for (int i = 0; i < workList.size(); i++) {
+			printGroup(workList.get(i));
+		}
+
 		
 	}
 	

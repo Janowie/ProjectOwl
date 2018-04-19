@@ -31,22 +31,6 @@ public class Group implements java.io.Serializable, Functions {
 		}	
 	}
 	
-	//		SET THE DAY OF WEEK		//
-	//		to be executed by officeWorker
-	int setDayOfWeek() {
-		String[] strDays = new String[] {"Pondelok", "Utorok", "Streda", "Stvrtok",
-		        "Piatok", "Sobota",  "Nedela" };
-		int dayOfWeek = 0;
-		for (int i = 0; i < strDays.length; i++) {
-			if (this.day.equals(strDays[i])) {
-				dayOfWeek = i + 1;
-			}
-			else 
-				dayOfWeek = 0;
-		}
-		return dayOfWeek;
- 
-	}
 
 	public Group (int grID) {
 		ID = grID;
