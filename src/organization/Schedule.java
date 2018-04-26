@@ -1,5 +1,6 @@
 package src.organization;
 
+import java.awt.TextArea;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,30 +10,34 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.stream.Stream;
 
+import javax.swing.JTextArea;
+
 import src.users.Group;
+import src.users.Teacher;
 
 // test 2
 public class Schedule {
 	ArrayList<Group> arrayGroups = new ArrayList<Group>();
 	int index = 0;
 	long difference = 0;
+	int numberOfGroups = 0;
 	
 	//		NUMBER OF SAVED GROUPS		//
 	private int numberOfGroups() throws IOException {
-		try (Stream<Path> files = Files.list(Paths.get("saves"))) {
+		try (Stream<Path> files = Files.list(Paths.get("saves/groups"))) {
 			long count = files.count();
-		    index = (int) count; 
 		    return (int) count;
 		}		
 	}
 	
 	//	BILD ARRAY FROM ALL SAVED GROUPS		//
-	private void buildArrayGroups() {
+	private void buildArrayGroups() throws IOException {
+		numberOfGroups = numberOfGroups();
 		if (index > 0) {
-			for (int i = 0; i < index; i++) {
+			for (int i = 0; i < numberOfGroups; i++) {
 				int ione = i + 1;
 				try {
-					FileInputStream fileIn = new FileInputStream("saves/group" + ione +".ser");
+					FileInputStream fileIn = new FileInputStream("saves/groups/group" + ione +".ser");
 					ObjectInputStream in = new ObjectInputStream(fileIn);
 					arrayGroups.add((Group) in.readObject());
 					in.close();
@@ -66,13 +71,13 @@ public class Schedule {
 	}
 	
 	
-	private void printGroup(Group group) {
+	private void printGroup(Group group, JTextArea area) {
 		difference = dayLeft(group);
-		System.out.println("\nSkupina: " + group.getID() + "\nCas: " + group.time + "\nUcitel: " + group.groupArrayTeachers.get(0).firstName +  "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
+		area.append("\nSkupina: " + group.getID() + "\nCas: " + group.time + "\nUcitel: " + group.groupArrayTeachers.get(0).username +  "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
 	}
 	
 	//		PRINT SCHEDULE DAY		//
-	public void printScheduleDay(String string) {
+	public void printScheduleDay(String string, JTextArea area) throws IOException {
 		int i = 0;
 		int counter = 0;
 		
@@ -81,12 +86,12 @@ public class Schedule {
 		while (i < index) {
 			if (string.isEmpty()) {
 				System.out.println("\n");
-				printGroup(arrayGroups.get(i));
+				printGroup(arrayGroups.get(i), area);
 				counter++;
 			}
 			else if (arrayGroups.get(i).day.equals(string)) {
 				System.out.println("\n");
-				printGroup(arrayGroups.get(i));
+				printGroup(arrayGroups.get(i), area);
 				counter++;
 			}
 			i++;
@@ -170,7 +175,7 @@ public class Schedule {
 	}
 	
 	//	PRINT SCHEDULE WEEK		//
-	public void printScheduleWeek() {
+	public void printScheduleWeek(JTextArea area) {
 		int counter = 0;
 		Date today = new Date();
 		ArrayList<Group> workList = new ArrayList<Group>();
@@ -189,19 +194,49 @@ public class Schedule {
 		workList = reorderArrayList(workList);
 		
 		for (int i = 0; i < workList.size(); i++) {
-			printGroup(workList.get(i));
+			printGroup(workList.get(i), area);
 		}
 
 		
 	}
 	
-	public void printScheduleNextWeek() {
+	//	PRINT TEACHERS SCHEDULE WEEK		//
+	public void printTeachersScheduleWeek(JTextArea area, Teacher teacher) {
+		int counter = 0;
+		Date today = new Date();
+		ArrayList<Group> workList = new ArrayList<Group>();
+		
+		for (int i = 0; i < arrayGroups.size(); i++) {
+			
+			if (inBoundaries(arrayGroups.get(i), today)) {
+				if (arrayGroups.get(i).groupArrayTeachers.get(0).username.equals(teacher.username)) {
+					workList.add(arrayGroups.get(i));
+					counter++;
+				}	
+			}
+			
+			if (counter == 0) {
+				System.out.println("Nenasiel som skupinu na dany tyzden.");
+			}	
+		}
+		
+		workList = reorderArrayList(workList);
+		
+		for (int i = 0; i < workList.size(); i++) {
+			printGroup(workList.get(i), area);
+			area.append("\n\n");
+		}
+
+		
+	}
+	
+	public void printScheduleNextWeek(JTextArea area) {
 		int counter = 0;
 		Date today = new Date();
 		
 		for (int i = 0; i < arrayGroups.size(); i++) {
 			if (inBoundaries(arrayGroups.get(i), nextWeek(today))) {
-				printGroup(arrayGroups.get(i));
+				printGroup(arrayGroups.get(i), area);
 				counter++;
 			}
 			if (counter == 0) {
