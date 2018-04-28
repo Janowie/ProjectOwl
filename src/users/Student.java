@@ -28,6 +28,11 @@ public class Student extends User implements java.io.Serializable {
 	int userID = 0;
 	
 	
+	public int getID() {
+		return userID;
+	}
+	
+	
 	//	NUMBER OF SAVED STUDENTS		//
 	private int numberOfStudents() throws IOException {
 		try (Stream<Path> files = Files.list(Paths.get("saves/students"))) { // zmenit
