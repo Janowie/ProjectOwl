@@ -1,9 +1,11 @@
 package src.users;
 
+import java.io.Serializable;
+
 //@SuppressWarnings("serial")
 
 @SuppressWarnings("serial")
-public abstract class User implements java.io.Serializable {
+public abstract class User implements Serializable {
 
 	public String username;
 	private String password;

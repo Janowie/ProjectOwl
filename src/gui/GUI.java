@@ -15,6 +15,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
+
+import saving.SavingGroups;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,9 +39,7 @@ import javax.swing.JScrollPane;
 
 public class GUI extends JFrame {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	CardLayout cardLayout = new CardLayout(0, 0);
@@ -78,8 +79,9 @@ public class GUI extends JFrame {
 	/**
 	 * Create the frame.
 	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public GUI() throws IOException {
+	public GUI() throws IOException, ClassNotFoundException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 921, 737);
 		contentPane = new JPanel();
@@ -97,10 +99,6 @@ public class GUI extends JFrame {
 		// Other
 		Date today = new Date();
 		Schedule schedule = new Schedule();
-		int numberOfStudents = 0;
-		int numberOfTeachers = 0;
-		int numberOfOffice = 0;
-		int numberOfDirectors = 0;
 		
 		
 		//		LOGIN PANEL		//
@@ -170,8 +168,10 @@ public class GUI extends JFrame {
 			btnShowSchedule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
+					
 						student[0].printScheduleWeek(txtrSchedule, today);
-					} catch (IOException e1) {
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -340,9 +340,9 @@ public class GUI extends JFrame {
 				btnNewButton_1.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						try {
-							office[0].addStudentToGroup(Integer.parseInt(textFieldGroupID2.getText()), textFieldUsernameOffice.getText());
+							office[0].addStudent(textFieldUsernameOffice.getText(), Integer.parseInt(textFieldGroupID2.getText()));
 							officeTArea.append("Student added to group.");
-						} catch (NumberFormatException | IOException e) {
+						} catch (NumberFormatException e) {
 							e.printStackTrace();
 						}
 					}
@@ -369,11 +369,7 @@ public class GUI extends JFrame {
 				btnDeleteGroup.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						int groupID = Integer.parseInt(textFieldGroupID.getText());
-						try {
-							office[0].deleteGroup(groupID);
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+						office[0].arrayGroups.deleteGroup(office[0].arrayGroups.findGroup(groupID));
 					}
 				});
 				btnDeleteGroup.setBounds(310, 234, 153, 82);
@@ -386,10 +382,14 @@ public class GUI extends JFrame {
 						try {
 							newGroup = new Group(Integer.parseInt(textFieldGroupID.getText()));
 							officeTArea.append("Group created.");
-						} catch (IOException e) {
+						} //newGroup.groupSave(newGroup);								
+						catch (NumberFormatException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						newGroup.groupSave(newGroup);								
 					}
 				});
 				btnCreateGroup.setBounds(108, 191, 190, 195);
@@ -412,10 +412,10 @@ public class GUI extends JFrame {
 				btnDeleteGroupStudent.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						try {
-							office[0].deleteStudentFromGroup(Integer.parseInt(textFieldGroupID2.getText()), textFieldUsernameOffice.getText());
+							office[0].removeStudent(textFieldUsernameOffice.getText(), Integer.parseInt(textFieldGroupID2.getText()));
 							officeTArea.append("Student deleted.");
 							
-						} catch (NumberFormatException | IOException e1) {
+						} catch (NumberFormatException e1) {
 							e1.printStackTrace();
 						}
 					}
@@ -512,7 +512,10 @@ public class GUI extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						office[0].addDetails(Integer.parseInt(detailsID.getText()), detailsTime.getText(), detailDay.getText(), Integer.parseInt(detailDuration.getText()), detailRoom.getText());
-					} catch (NumberFormatException | IOException e1) {
+					} catch (NumberFormatException e1) {
+						e1.printStackTrace();
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					JOptionPane.showMessageDialog(null, "Group " + detailsID.getText() + " saved.");
@@ -551,8 +554,8 @@ public class GUI extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					try {
 						login = new Login();
-					} catch (IOException e) {
-						login = null;
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					

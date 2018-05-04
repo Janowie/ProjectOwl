@@ -2,66 +2,25 @@ package src.organization;
 
 import java.awt.TextArea;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.stream.Stream;
 
 import javax.swing.JTextArea;
 
+import saving.SavingGroups;
 import src.users.Group;
 import src.users.Teacher;
 
 // test 2
 public class Schedule {
-	ArrayList<Group> arrayGroups = new ArrayList<Group>();
-	int index = 0;
+	SavingGroups arrayGroups;
 	long difference = 0;
-	int numberOfGroups = 0;
-	
-	//		NUMBER OF SAVED GROUPS		//
-	private int numberOfGroups() throws IOException {
-		try (Stream<Path> files = Files.list(Paths.get("saves/groups"))) {
-			long count = files.count();
-		    return (int) count;
-		}		
-	}
-	
-	//	BILD ARRAY FROM ALL SAVED GROUPS		//
-	private void buildArrayGroups() throws IOException {
-		numberOfGroups = numberOfGroups();
-		if (index > 0) {
-			for (int i = 0; i < numberOfGroups; i++) {
-				int ione = i + 1;
-				try {
-					FileInputStream fileIn = new FileInputStream("saves/groups/group" + ione +".ser");
-					ObjectInputStream in = new ObjectInputStream(fileIn);
-					arrayGroups.add((Group) in.readObject());
-					in.close();
-					fileIn.close();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-				catch (ClassNotFoundException c) {
-					System.out.println("Group class not found");
-					c.printStackTrace();
-				}
-			}
-		}
-		else {
-			System.out.println("No groups at all..");
-		}
-		
-	}
+
 	
 	//		CONSTRUCTOR		//
-	public Schedule() throws IOException {
-		index = numberOfGroups();
-		buildArrayGroups();
+	public Schedule() throws ClassNotFoundException {
+		arrayGroups = new SavingGroups();
 	}
 	
 	//		DAYS LEFT		//
@@ -73,25 +32,25 @@ public class Schedule {
 	
 	private void printGroup(Group group, JTextArea area) {
 		difference = dayLeft(group);
-		area.append("\nSkupina: " + group.getID() + "\nCas: " + group.time + "\nUcitel: " + group.groupArrayTeachers.get(0).username +  "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
+		area.append("\nSkupina: " + group.getID() + "\nCas: " + group.time + "\nUcitel: " + group.getGroupArrayTeachers().get(0).username +  "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
 	}
 	
 	//		PRINT SCHEDULE DAY		//
-	public void printScheduleDay(String string, JTextArea area) throws IOException {
+	public void printScheduleDay(String string, JTextArea area) throws ClassNotFoundException {
 		int i = 0;
 		int counter = 0;
 		
-		buildArrayGroups();
+		arrayGroups = new SavingGroups();
 		
-		while (i < index) {
+		while (i < arrayGroups.getLenght()) {
 			if (string.isEmpty()) {
 				System.out.println("\n");
-				printGroup(arrayGroups.get(i), area);
+				printGroup(arrayGroups.findGroup(i), area);
 				counter++;
 			}
-			else if (arrayGroups.get(i).day.equals(string)) {
+			else if (arrayGroups.findGroup(i).day.equals(string)) {
 				System.out.println("\n");
-				printGroup(arrayGroups.get(i), area);
+				printGroup(arrayGroups.findGroup(i), area);
 				counter++;
 			}
 			i++;
@@ -180,10 +139,10 @@ public class Schedule {
 		Date today = new Date();
 		ArrayList<Group> workList = new ArrayList<Group>();
 		
-		for (int i = 0; i < arrayGroups.size(); i++) {
+		for (int i = 0; i < arrayGroups.getLenght(); i++) {
 			
-			if (inBoundaries(arrayGroups.get(i), today)) {
-				workList.add(arrayGroups.get(i));
+			if (inBoundaries(arrayGroups.findGroup(i), today)) {
+				workList.add(arrayGroups.findGroup(i));
 				counter++;
 			}
 			if (counter == 0) {
@@ -206,11 +165,11 @@ public class Schedule {
 		Date today = new Date();
 		ArrayList<Group> workList = new ArrayList<Group>();
 		
-		for (int i = 0; i < arrayGroups.size(); i++) {
+		for (int i = 0; i < arrayGroups.getLenght(); i++) {
 			
-			if (inBoundaries(arrayGroups.get(i), today)) {
-				if (arrayGroups.get(i).groupArrayTeachers.get(0).username.equals(teacher.username)) {
-					workList.add(arrayGroups.get(i));
+			if (inBoundaries(arrayGroups.findGroup(i), today)) {
+				if (arrayGroups.findGroup(i).getGroupArrayTeachers().get(0).username.equals(teacher.username)) {
+					workList.add(arrayGroups.findGroup(i));
 					counter++;
 				}	
 			}
@@ -234,9 +193,9 @@ public class Schedule {
 		int counter = 0;
 		Date today = new Date();
 		
-		for (int i = 0; i < arrayGroups.size(); i++) {
-			if (inBoundaries(arrayGroups.get(i), nextWeek(today))) {
-				printGroup(arrayGroups.get(i), area);
+		for (int i = 0; i < arrayGroups.getLenght(); i++) {
+			if (inBoundaries(arrayGroups.findGroup(i), nextWeek(today))) {
+				printGroup(arrayGroups.findGroup(i), area);
 				counter++;
 			}
 			if (counter == 0) {
