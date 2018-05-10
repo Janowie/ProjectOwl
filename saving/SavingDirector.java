@@ -10,24 +10,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import src.users.Director;
-import src.users.Teacher;
 
 
+@SuppressWarnings("serial")
 public class SavingDirector implements Serializable {
 private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 	
 	public SavingDirector() throws ClassNotFoundException {
 		if (fileExists()) {
-			savedDirector = load();
-			System.out.println("Object savedDirectors loaded");
-		}
-		else {
-			System.out.println("Object savedDirectors created");
+			load();
 		}
 	}
 	
 	private boolean fileExists() {
-		File f = new File("savedDirectors.ser");
+		File f = new File("userData/savedDirectors.ser");
 		if(f.exists() && !f.isDirectory()) { 
 		    return true;
 		}
@@ -61,7 +57,7 @@ private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 	
 	private void save() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream("savedDirectors.ser");
+			FileOutputStream fileOut = new FileOutputStream("userData/savedDirectors.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);			
 			out.writeObject(savedDirector);
 			out.close();
@@ -74,20 +70,17 @@ private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Director> load() throws ClassNotFoundException {
-		ArrayList<Director> loadedList = new ArrayList<Director>();
+	public void load() throws ClassNotFoundException {
 		try {
-			FileInputStream fileIn = new FileInputStream("savedDirectors.ser");
+			FileInputStream fileIn = new FileInputStream("userData/savedDirectors.ser");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			loadedList = (ArrayList<Director>) in.readObject();
+			savedDirector = (ArrayList<Director>) in.readObject();
 			in.close();
 			fileIn.close();
 		}
 		catch (IOException i) {
 			i.printStackTrace();
 		}
-		System.out.println("Loading array saved directors.");
-		return loadedList;
 	}
 
 	public int getLenght() {

@@ -26,6 +26,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
@@ -57,6 +58,9 @@ public class GUI extends JFrame {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	private JTextField begDay;
+	private JTextField directorUserName;
+	private JTextField directorAddMoney;
 	
 	
 
@@ -74,6 +78,9 @@ public class GUI extends JFrame {
 				}
 			}
 		});
+		
+		//ThreadLogin loginThread = new ThreadLogin();
+		//loginThread.run();
 	}
 
 	/**
@@ -128,13 +135,12 @@ public class GUI extends JFrame {
 			login.add(lblUserName);
 			
 			textFieldUsername = new JTextField();
-			textFieldUsername.setText("menoOffice");
 			textFieldUsername.setBounds(382, 183, 116, 22);
 			login.add(textFieldUsername);
 			textFieldUsername.setColumns(10);
 			
 			password = new JTextField();
-			password.setText("hesloOffice");
+			password.setText("heslo1");
 			password.setBounds(382, 218, 116, 22);
 			login.add(password);
 			password.setColumns(10);
@@ -146,18 +152,21 @@ public class GUI extends JFrame {
 		contentPane.add(studentPanel, "cardStudent");
 		studentPanel.setLayout(null);
 		
+
+			JTextArea txtrSchedule = new JTextArea();
+			txtrSchedule.setBounds(214, 135, 639, 471);
+			studentPanel.add(txtrSchedule);
+		
 			JButton logoutButton = new JButton("LOGOUT");
 			logoutButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					txtrSchedule.setText("");
 					cardLayout.show(contentPane, "login");
 				}
 			});
 			logoutButton.setBounds(12, 13, 122, 25);
 			studentPanel.add(logoutButton);
 			
-			JTextArea txtrSchedule = new JTextArea();
-			txtrSchedule.setBounds(214, 135, 639, 471);
-			studentPanel.add(txtrSchedule);
 			
 			JLabel lblStudent = new JLabel("STUDENT");
 			lblStudent.setFont(new Font("Vineta BT", Font.PLAIN, 50));
@@ -192,7 +201,7 @@ public class GUI extends JFrame {
 		teacherFrontPanel.setLayout(null);
 		
 		JButton btnAddStudent = new JButton("Add student");
-		btnAddStudent.setBounds(78, 265, 101, 83);
+		btnAddStudent.setBounds(68, 261, 143, 83);
 		teacherFrontPanel.add(btnAddStudent);
 		
 		JButton btnClearSchedule = new JButton("Clear schedule");
@@ -278,7 +287,11 @@ public class GUI extends JFrame {
 			});
 		btnShowScheduleWeek.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				schedule.printTeachersScheduleWeek(textArea, teacher[0]);
+				try {
+					schedule.printTeachersScheduleWeek(textArea, teacher[0]);
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnShowScheduleWeek_1.addActionListener(new ActionListener() {
@@ -317,6 +330,7 @@ public class GUI extends JFrame {
 				btnBack_1.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						cardLayout.show(contentPane, "login");
+						officeTArea.setText("");
 					}
 				});
 				btnBack_1.setBounds(12, 13, 119, 25);
@@ -344,6 +358,8 @@ public class GUI extends JFrame {
 							officeTArea.append("Student added to group.");
 						} catch (NumberFormatException e) {
 							e.printStackTrace();
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
 						}
 					}
 				});
@@ -358,6 +374,9 @@ public class GUI extends JFrame {
 							office[0].setTeacher(Integer.parseInt(textFieldGroupID2.getText()), textFieldUsernameOffice.getText());
 							officeTArea.append("Teacher added to group.");
 						} catch (NumberFormatException | IOException e1) {
+							e1.printStackTrace();
+						} catch (ClassNotFoundException e1) {
+							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
@@ -382,12 +401,10 @@ public class GUI extends JFrame {
 						try {
 							newGroup = new Group(Integer.parseInt(textFieldGroupID.getText()));
 							officeTArea.append("Group created.");
-						} //newGroup.groupSave(newGroup);								
+						} 							
 						catch (NumberFormatException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -416,6 +433,9 @@ public class GUI extends JFrame {
 							officeTArea.append("Student deleted.");
 							
 						} catch (NumberFormatException e1) {
+							e1.printStackTrace();
+						} catch (ClassNotFoundException e1) {
+							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
@@ -477,12 +497,12 @@ public class GUI extends JFrame {
 			detailsTime.setColumns(10);
 			
 			detailDay = new JTextField();
-			detailDay.setBounds(284, 234, 360, 62);
+			detailDay.setBounds(284, 201, 360, 62);
 			groupAddDetails.add(detailDay);
 			detailDay.setColumns(10);
 			
 			detailDuration = new JTextField();
-			detailDuration.setBounds(284, 360, 360, 62);
+			detailDuration.setBounds(284, 341, 360, 62);
 			groupAddDetails.add(detailDuration);
 			detailDuration.setColumns(10);
 			
@@ -491,30 +511,36 @@ public class GUI extends JFrame {
 			groupAddDetails.add(lblTime);
 			
 			JLabel lblDay = new JLabel("Day");
-			lblDay.setBounds(191, 257, 56, 16);
+			lblDay.setBounds(191, 224, 56, 16);
 			groupAddDetails.add(lblDay);
 			
 			JLabel lblNewLabel = new JLabel("Duration");
-			lblNewLabel.setBounds(191, 383, 56, 16);
+			lblNewLabel.setBounds(191, 364, 56, 16);
 			groupAddDetails.add(lblNewLabel);
 			
 			detailRoom = new JTextField();
-			detailRoom.setBounds(284, 467, 360, 62);
+			detailRoom.setBounds(284, 416, 360, 62);
 			groupAddDetails.add(detailRoom);
 			detailRoom.setColumns(10);
 			
 			JLabel lblRoom = new JLabel("Room");
-			lblRoom.setBounds(191, 490, 56, 16);
+			lblRoom.setBounds(191, 439, 56, 16);
 			groupAddDetails.add(lblRoom);
 			
 			JButton btnSave = new JButton("Save");
 			btnSave.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						office[0].addDetails(Integer.parseInt(detailsID.getText()), detailsTime.getText(), detailDay.getText(), Integer.parseInt(detailDuration.getText()), detailRoom.getText());
+						office[0].addDetails(Integer.parseInt(detailsID.getText()), detailsTime.getText(), detailDay.getText(), begDay.getText(),  Integer.parseInt(detailDuration.getText()), detailRoom.getText());
 					} catch (NumberFormatException e1) {
 						e1.printStackTrace();
 					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (ParseException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
@@ -526,59 +552,170 @@ public class GUI extends JFrame {
 			groupAddDetails.add(btnSave);
 			
 			detailsID = new JTextField();
-			detailsID.setBounds(284, 37, 360, 57);
+			detailsID.setBounds(284, 56, 360, 57);
 			groupAddDetails.add(detailsID);
 			detailsID.setColumns(10);
 			
 			JLabel lblGroupid_2 = new JLabel("GroupID");
-			lblGroupid_2.setBounds(191, 57, 56, 16);
+			lblGroupid_2.setBounds(191, 76, 56, 16);
 			groupAddDetails.add(lblGroupid_2);
+			
+			begDay = new JTextField();
+			begDay.setBounds(284, 269, 360, 59);
+			groupAddDetails.add(begDay);
+			begDay.setColumns(10);
+			
+			JLabel lblBegginingDate = new JLabel("Beggining date");
+			lblBegginingDate.setBounds(136, 290, 135, 16);
+			groupAddDetails.add(lblBegginingDate);
 		
 		JPanel directorPanel = new JPanel();
-		contentPane.add(directorPanel, "name_119853613248170");
+		contentPane.add(directorPanel, "cardDirector");
 		directorPanel.setLayout(null);
+		
+			JTextArea directorArea = new JTextArea();
+			directorArea.setBounds(163, 19, 558, 138);
+			directorPanel.add(directorArea);
 		
 			JButton btnLogout = new JButton("LOGOUT");
 			btnLogout.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					cardLayout.show(contentPane, "login");
+					directorArea.setText("");
 				}
 			});
 			btnLogout.setBounds(12, 13, 97, 25);
 			directorPanel.add(btnLogout);
+			
+			JButton btnShowTeachers = new JButton("show teachers");
+			btnShowTeachers.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						director[0].printTeachers(directorArea);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			btnShowTeachers.setBounds(163, 207, 198, 25);
+			directorPanel.add(btnShowTeachers);
+			
+			JButton btnShowOfficeWorkers = new JButton("show office workers");
+			btnShowOfficeWorkers.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						director[0].printOffice(directorArea);
+					} catch (ClassNotFoundException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
+			btnShowOfficeWorkers.setBounds(163, 245, 198, 25);
+			directorPanel.add(btnShowOfficeWorkers);
+			
+			JButton btnShowStudents = new JButton("show students");
+			btnShowStudents.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						director[0].printStudents(directorArea);
+					} catch (ClassNotFoundException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
+			btnShowStudents.setBounds(163, 283, 198, 25);
+			directorPanel.add(btnShowStudents);
+			
+			JButton btnAddsalaryteacher = new JButton("addSalaryTeacher");
+			btnAddsalaryteacher.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						director[0].updateSalaryTeacher(directorUserName.getText(), Double.parseDouble(directorAddMoney.getText()), directorArea);
+					} catch (NumberFormatException | ClassNotFoundException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
+			btnAddsalaryteacher.setBounds(383, 207, 338, 25);
+			directorPanel.add(btnAddsalaryteacher);
+			
+			JButton btnAddsalaryoffice = new JButton("addSalaryOffice");
+			btnAddsalaryoffice.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						director[0].updateSalaryOffice(directorUserName.getText(), Double.parseDouble(directorAddMoney.getText()), directorArea);
+					} catch (NumberFormatException | ClassNotFoundException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
+			btnAddsalaryoffice.setBounds(393, 245, 328, 25);
+			directorPanel.add(btnAddsalaryoffice);
+			
+			directorUserName = new JTextField();
+			directorUserName.setBounds(742, 208, 116, 22);
+			directorPanel.add(directorUserName);
+			directorUserName.setColumns(10);
+			
+			JLabel lblName = new JLabel("name");
+			lblName.setBounds(779, 179, 56, 16);
+			directorPanel.add(lblName);
+			
+			directorAddMoney = new JTextField();
+			directorAddMoney.setBounds(742, 272, 116, 22);
+			directorPanel.add(directorAddMoney);
+			directorAddMoney.setColumns(10);
+			
+			JLabel lblMoney = new JLabel("Money");
+			lblMoney.setBounds(779, 249, 56, 16);
+			directorPanel.add(lblMoney);
 			
 			
 			//		ACTION LISTENERS		//
 			btnLogin.addActionListener(new ActionListener() {
 				Login login;
 				public void actionPerformed(ActionEvent arg0) {
+				
+					
 					try {
 						login = new Login();
 					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+										
+					if (textFieldUsername.getText().indexOf("@") == -1) {
+						try {
+							throw new InvalidName("Not valid name");
+						} catch (InvalidName e) {
+							e.printStackTrace();
+						}  
+					}
+					else {
+						int type = login.loginMethod(textFieldUsername.getText(), password.getText());
+						if (type == 1) {
+							cardLayout.show(contentPane, "cardStudent");
+							student[0] = login.returnStudent();
+							System.out.println("Opening student");
+						}
+						else if (type == 2) {
+							cardLayout.show(contentPane, "cardTeacher");
+							teacher[0] = login.returnTeacher();
+							System.out.println("Opening teacher");
+						}
+						else if (type == 3) {
+							cardLayout.show(contentPane, "cardOffice");
+							office[0] = login.returnOffice();
+							System.out.println("Opening office");
+						}
+						else if (type == 4) {
+							cardLayout.show(contentPane, "cardDirector");
+							director[0] = login.returnDirector();
+							System.out.println("Opening director");
+						}
+					}
 					
-					System.out.println(textFieldUsername.getText() + " " + password.getText());
-					
-					
-					int type = login.loginMethod(textFieldUsername.getText(), password.getText());
-					if (type == 1) {
-						cardLayout.show(contentPane, "cardStudent");
-						student[0] = login.returnStudent();
-					}
-					else if (type == 2) {
-						cardLayout.show(contentPane, "cardTeacher");
-						teacher[0] = login.returnTeacher();
-					}
-					else if (type == 3) {
-						cardLayout.show(contentPane, "cardOffice");
-						office[0] = login.returnOffice();
-					}
-					else if (type == 4) {
-						cardLayout.show(contentPane, "cardDirector");
-						director[0] = login.returnDirector();
-					}
+					textFieldUsername.setText("");
+					password.setText("");
 										
 				}
 				

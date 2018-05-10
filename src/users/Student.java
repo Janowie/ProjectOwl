@@ -29,6 +29,14 @@ public class Student extends User implements Serializable {
 		arrayStudents.saveStudent(this);
 	}
 	
+	public void setGroupID(int i) {
+		groupNum = i;
+	}
+	
+	public int getGroupID() {
+		return groupNum;
+	}
+	
 	public int getID() {
 		return userID;
 	}
@@ -45,9 +53,13 @@ public class Student extends User implements Serializable {
 		boolean comp4 = arrayGroups.findGroup(groupNum).end.equals(today);
 		
 		if ((comp1 || comp2) && (comp3 || comp4)) {
+			System.out.println("Sedi cas");
 			return true;
 		}
-		else return false;
+		else {
+			System.out.println("Nesedi cas");
+			return false;
+		}
 	}
 	
 	public void printScheduleWeek(JTextArea area, Date today) throws ClassNotFoundException {
@@ -56,43 +68,24 @@ public class Student extends User implements Serializable {
 		
 		groupNum = arrayStudents.findStudent(this.username).groupNum;
 		
-		System.out.println("this.studentsGroup.end " + arrayGroups.findGroup(groupNum).end);
-		
-		area.append("Group ends " + arrayGroups.findGroup(groupNum).end);
-		
-		if (withinBorders(today)) {
-			printSchedule(area);
+		if (groupNum == 0) {
+			area.append("Student nie je priradeny v ziadnej skupine");
 		}
-		else
-			area.append("Ziadna hodina sa na dany tyzden nenasla..");
-	}
-	
-	public void printScheduleWeekNorm(Date today) throws ClassNotFoundException {
-		arrayStudents = new SavingStudents();
-		arrayGroups = new SavingGroups();
-		
-		groupNum = arrayStudents.findStudent(this.username).groupNum;
-		
-		System.out.println("this.studentsGroup.end " + arrayGroups.findGroup(groupNum).end);
-		
-		System.out.println("Group ends " + arrayGroups.findGroup(groupNum).end);
-		
-		if (withinBorders(today)) {
-			printScheduleNorm();
+		else {
+			System.out.println("this.studentsGroup.end " + arrayGroups.findGroup(groupNum).end);
+			
+			area.append("Group ends " + arrayGroups.findGroup(groupNum).end);
+			
+			if (withinBorders(today)) {
+				printSchedule(area);
+			}
+			else
+				area.append("Ziadna hodina sa na dany tyzden nenasla..");
 		}
-		else
-			System.out.println("Ziadna hodina sa na dany tyzden nenasla..");
 	}
-	
+		
 	private void printSchedule(JTextArea area) {
 		area.append(
-				"Trieda: " + arrayGroups.findGroup(groupNum).room +
-				"\nCas: " + arrayGroups.findGroup(groupNum).time
-		);
-	}
-	
-	private void printScheduleNorm() {
-		System.out.println(
 				"Trieda: " + arrayGroups.findGroup(groupNum).room +
 				"\nCas: " + arrayGroups.findGroup(groupNum).time
 		);

@@ -11,7 +11,7 @@ import src.organization.Observer;
 @SuppressWarnings("serial")
 public class Teacher extends User implements Serializable {
 	
-	int[] groupsTaught = new int[5];
+	int groupTaught = 0;
 	SavingTeachers arrayTeachers;
 	private List<Observer> observers = new ArrayList<Observer>();
 	private int userID;
@@ -24,6 +24,14 @@ public class Teacher extends User implements Serializable {
 		IBAN = Iban;
 		arrayTeachers = new SavingTeachers();
 		arrayTeachers.saveEmployee(this);
+	}
+	
+	public void addGroup(int i) {
+		groupTaught = i;
+	}
+	
+	public int getGroup(int i) {
+		return groupTaught;
 	}
 	
 	public int getUserID() {

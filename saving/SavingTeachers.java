@@ -11,23 +11,33 @@ import java.util.ArrayList;
 
 import src.users.Teacher;
 
+@SuppressWarnings("serial")
 public class SavingTeachers implements Serializable {
 private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 	
 	public SavingTeachers() throws ClassNotFoundException {
 		if (fileExists()) {
-			savedTeachers = load();
+			load();
 		}
 	}
 	
 	private boolean fileExists() {
-		File f = new File("savedTeachers.ser");
+		File f = new File("userData/savedTeachers.ser");
 		if(f.exists() && !f.isDirectory()) { 
 		    return true;
 		}
 		else {
 			return false;
 		}
+	}
+	
+	public Teacher findTeacherByGroup(int ID) {
+		for (int i = 0; i < savedTeachers.size(); i++) {
+			if (savedTeachers.get(i).getGroup(i) == ID) {
+				return savedTeachers.get(i);
+			}
+		}
+		return null;
 	}
 	
 	public Teacher findTeacher(String string) {	
@@ -53,9 +63,9 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 		save();
 	}
 	
-	private void save() {
+	public void save() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream("savedTeachers.ser");
+			FileOutputStream fileOut = new FileOutputStream("userData/savedTeachers.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);			
 			out.writeObject(savedTeachers);
 			out.close();
@@ -64,24 +74,20 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 		catch (IOException i) {
 			i.printStackTrace();
 		}
-		System.out.println("Saving array saved teachers.");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Teacher> load() throws ClassNotFoundException {
-		ArrayList<Teacher> loadedList = null;
+	public void load() throws ClassNotFoundException {
 		try {
-			FileInputStream fileIn = new FileInputStream("savedTeachers.ser");
+			FileInputStream fileIn = new FileInputStream("userData/savedTeachers.ser");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			loadedList = (ArrayList<Teacher>) in.readObject();
+			savedTeachers = (ArrayList<Teacher>) in.readObject();
 			in.close();
 			fileIn.close();
 		}
 		catch (IOException i) {
 			i.printStackTrace();
 		}
-		System.out.println("Loading array saved teachers.");
-		return loadedList;
 	}
 
 	public int getLength() {

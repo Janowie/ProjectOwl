@@ -2,13 +2,17 @@ package src.gui;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JTextArea;
 
 import com.sun.istack.internal.FinalArrayList;
 
+import saving.SavingDirector;
 import saving.SavingGroups;
+import saving.SavingOfficeWorkers;
 import saving.SavingStudents;
+import saving.SavingTeachers;
 import src.organization.Schedule;
 import src.organization.SpecificTeacherObserver;
 import src.users.Director;
@@ -24,22 +28,33 @@ public class Projekt_Owl {
 
 	public static void main(String [] args) throws IOException, ParseException, ClassNotFoundException {
 		
-		Student ferko = new Student("Ferko", "", "", 0);
+		Date today = new Date();
+		Student student1 = new Student("student1", "heslo1", "", 0);
+		Student student2 = new Student("student2", "heslo2", "", 0);
+		Student student3 = new Student("student3", "heslo3", "", 0);
+		Student student4 = new Student("student4", "heslo4", "", 0);
+		Student student5 = new Student("student5", "heslo5", "", 0);
+		Student student6 = new Student("student6", "heslo6", "", 0);
+		OfficeWorker office = new OfficeWorker("office1", "heslo1", "");
+		Teacher teacher1 = new Teacher("teacher1","heslo1","","");
+		Group skupina1 = new Group(1);
+		Group skupina2 = new Group(2);
+		Director director = new Director("director1", "heslo1", "som director");
 		SavingStudents savedStudents = new SavingStudents();
-		savedStudents.saved = savedStudents.load();
-		//savedStudents.saveStudent(ferko);
-		//Student skuska = new Student("skuska","skuska", "skuska",0);
+		SavingOfficeWorkers savedOffice = new SavingOfficeWorkers();
+		SavingGroups savedGroups = new SavingGroups();
+		SavingTeachers savedTeachers = new SavingTeachers();
+		SavingDirector savedDirectors = new SavingDirector();
 		
-		//skuska = savedStudents.findStudent("Ferko");
+		Schedule schedule = new Schedule();
+
+		office.addStudent("student1", 1);
+		office.addDetails(1, "13:00", "Pondelok","03.05.2018", 4, "L.9");
 		
-		//savedStudents.printSavedStudents();
 		
-		
-		
+		System.out.println("\n");
 	
-
-
-	    	    	
-
+		
+		
 	}
 }

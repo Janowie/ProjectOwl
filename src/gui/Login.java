@@ -1,20 +1,10 @@
 package src.gui;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.stream.Stream;
-
 import saving.SavingDirector;
 import saving.SavingOfficeWorkers;
 import saving.SavingStudents;
 import saving.SavingTeachers;
 import src.users.Director;
-import src.users.Group;
 import src.users.OfficeWorker;
 import src.users.Student;
 import src.users.Teacher;
@@ -45,6 +35,7 @@ public class Login {
 		
 		while (counter < 5) {
 			if (type == -1) {
+				System.out.println("login hlada student");
 				counter++;
 				for (int i = 0; i < arrayStudents.getLenght(); i++) {
 					arrayUsername = arrayStudents.getStudent(i).username;
@@ -57,6 +48,7 @@ public class Login {
 				}
 			}
 			else if (type == -2) {
+				System.out.println("login hlada ucitel");
 				counter++;
 				for (int i = 0; i < arrayTeachers.getLength(); i++) {
 					arrayUsername = arrayTeachers.getTeacher(i).username;
@@ -69,18 +61,26 @@ public class Login {
 				}
 			}
 			else if (type == -3) {
+				System.out.println("login hlada office");
 				counter++;
 				for (int i = 0; i < arrayOffice.getLenght(); i++) {
 					arrayUsername = arrayOffice.getOffice(i).username;
 					arrayPassword = arrayOffice.getOffice(i).getPassword();
 					if ((arrayUsername.equals(username)) && (arrayPassword.equals(password))) {
 						ID = i;
-						return 3;
+						if (arrayOffice.getOffice(i).getUserID() == 3) {
+							return 3;
+						}
+						else if (arrayOffice.getOffice(i).getUserID() == 4) {
+							type = -4;
+						}
+						
 					}
 					else type = -4;
 				}
 			}
 			else if (type == -4) {
+				System.out.println("login hlada director");
 				counter++;
 				for (int i = 0; i < arrayDirector.getLenght(); i++) {
 					arrayUsername = arrayDirector.getDirector(i).username;

@@ -10,8 +10,6 @@ import src.organization.Functions;
 public class Group implements java.io.Serializable, Functions {
 	
 	SavingGroups arrayGroups = new SavingGroups();	
-	ArrayList<Student> groupArrayStudents = new ArrayList<Student>();
-	private ArrayList<Teacher> groupArrayTeachers = new ArrayList<Teacher>();
 	
 	int ID, size;
 	public String time;
@@ -25,22 +23,13 @@ public class Group implements java.io.Serializable, Functions {
 	
 	public Group (int grID) throws ClassNotFoundException {
 		ID = grID;
-		
+		//arrayGroups.load();
 		arrayGroups.saveGroup(this);
 	}
 	
 	public int getID() {
 		return this.ID;
 	}
-
-	public ArrayList<Teacher> getGroupArrayTeachers() {
-		return groupArrayTeachers;
-	}
-
-	public void setGroupArrayTeachers(ArrayList<Teacher> groupArrayTeachers) {
-		this.groupArrayTeachers = groupArrayTeachers;
-	}
-
-			
+		
 
 }

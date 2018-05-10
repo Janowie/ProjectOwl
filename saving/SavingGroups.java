@@ -17,16 +17,12 @@ public class SavingGroups implements Serializable {
 	
 	public SavingGroups() throws ClassNotFoundException {
 		if (fileExists()) {
-			savedGroups = load();
-			System.out.println("Object savedGroups loaded");
-		}
-		else {
-			System.out.println("Object savedGroups created");
+			load();
 		}
 	}
 	
 	private boolean fileExists() {
-		File f = new File("savedGroups.ser");
+		File f = new File("userData/savedGroups.ser");
 		if(f.exists() && !f.isDirectory()) { 
 		    return true;
 		}
@@ -44,6 +40,9 @@ public class SavingGroups implements Serializable {
 			if (ID == savedGroups.get(i).getID()) {
 				return savedGroups.get(i);
 			}
+			else  {
+				System.out.println("Neviem najst skupinu");
+			}
 		}
 		return null;
 	}
@@ -60,7 +59,7 @@ public class SavingGroups implements Serializable {
 	
 	public void save() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream("savedGroups.ser");
+			FileOutputStream fileOut = new FileOutputStream("userData/savedGroups.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);			
 			out.writeObject(savedGroups);
 			out.close();
@@ -69,23 +68,30 @@ public class SavingGroups implements Serializable {
 		catch (IOException i) {
 			i.printStackTrace();
 		}
-		System.out.println("Saving array saved groups.");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Group> load() throws ClassNotFoundException {
-		ArrayList<Group> loadedList = new ArrayList<Group>();
+	public void load() throws ClassNotFoundException {
 		try {
-			FileInputStream fileIn = new FileInputStream("savedGroups.ser");
+			FileInputStream fileIn = new FileInputStream("userData/savedGroups.ser");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			loadedList = (ArrayList<Group>) in.readObject();
+			savedGroups = (ArrayList<Group>) in.readObject();
 			in.close();
 			fileIn.close();
 		}
 		catch (IOException i) {
 			i.printStackTrace();
 		}
-		System.out.println("Loading array saved groups.");
-		return loadedList;
+	}
+	
+	public void printSavedGroups() {
+		if (savedGroups.size() > 0) {
+			for (int i = 0; i < savedGroups.size(); i++) {
+				System.out.println(savedGroups.get(i).getID() + "\n");
+			}
+		}
+		else {
+			System.out.println("No students");
+		}
 	}
 }

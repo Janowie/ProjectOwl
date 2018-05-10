@@ -9,41 +9,35 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import src.users.Group;
 import src.users.OfficeWorker;
-import src.users.Teacher;
-import src.users.User;
 
+
+@SuppressWarnings("serial")
 public class SavingOfficeWorkers implements Serializable {
-private ArrayList<OfficeWorker>  savedOffice;
+private ArrayList<OfficeWorker>  savedOffice = new ArrayList<OfficeWorker>();
 	
 	public SavingOfficeWorkers() throws ClassNotFoundException {
 		if (fileExists()) {
-			savedOffice = load();
-			System.out.println("Object savedGroups loaded");
-		}
-		else {
-			savedOffice = new ArrayList<OfficeWorker>();
-			System.out.println("Object savedGroups created");
+			load();
 		}
 	}
 	
+	public OfficeWorker getOffice(int i) {
+		return savedOffice.get(i);
+	}
+		
 	public int getLenght() {
 		return this.savedOffice.size();
 	}
 	
 	private boolean fileExists() {
-		File f = new File("savedOfficeWorkers.ser");
+		File f = new File("userData/savedOfficeWorkers.ser");
 		if(f.exists() && !f.isDirectory()) { 
 		    return true;
 		}
 		else {
 			return false;
 		}
-	}
-	
-	public OfficeWorker getOffice(int i) {
-		return savedOffice.get(i);
 	}
 	
 	public OfficeWorker findOffice(String string) {	
@@ -65,9 +59,9 @@ private ArrayList<OfficeWorker>  savedOffice;
 		save();
 	}
 	
-	private void save() {
+	public void save() {
 		try {
-			FileOutputStream fileOut = new FileOutputStream("savedOfficeWorkers.ser");
+			FileOutputStream fileOut = new FileOutputStream("userData/savedOfficeWorkers.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);			
 			out.writeObject(savedOffice);
 			out.close();
@@ -76,23 +70,30 @@ private ArrayList<OfficeWorker>  savedOffice;
 		catch (IOException i) {
 			i.printStackTrace();
 		}
-		System.out.println("Saving array saved offices.");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<OfficeWorker> load() throws ClassNotFoundException {
-		ArrayList<OfficeWorker> loadedList = new ArrayList<OfficeWorker>();
+	public void load() throws ClassNotFoundException {
 		try {
-			FileInputStream fileIn = new FileInputStream("savedOfficeWorkers.ser");
+			FileInputStream fileIn = new FileInputStream("userData/savedOfficeWorkers.ser");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			loadedList = (ArrayList<OfficeWorker>) in.readObject();
+			savedOffice = (ArrayList<OfficeWorker>) in.readObject();
 			in.close();
 			fileIn.close();
 		}
 		catch (IOException i) {
 			i.printStackTrace();
 		}
-		System.out.println("Loading array saved offices.");
-		return loadedList;
+	}
+	
+	public void printSavedOffice() {
+		if (savedOffice.size() > 0) {
+			for (int i = 0; i < savedOffice.size(); i++) {
+				System.out.println(savedOffice.get(i).username + "\n");
+			}
+		}
+		else {
+			System.out.println("No office workers to print");
+		}
 	}
 }

@@ -1,7 +1,5 @@
 package src.organization;
 
-import java.awt.TextArea;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,18 +7,21 @@ import java.util.Date;
 import javax.swing.JTextArea;
 
 import saving.SavingGroups;
+import saving.SavingTeachers;
 import src.users.Group;
 import src.users.Teacher;
 
-// test 2
+
 public class Schedule {
 	SavingGroups arrayGroups;
+	SavingTeachers arrayTeachers;
 	long difference = 0;
 
 	
 	//		CONSTRUCTOR		//
 	public Schedule() throws ClassNotFoundException {
 		arrayGroups = new SavingGroups();
+		arrayTeachers = new SavingTeachers();
 	}
 	
 	//		DAYS LEFT		//
@@ -32,7 +33,7 @@ public class Schedule {
 	
 	private void printGroup(Group group, JTextArea area) {
 		difference = dayLeft(group);
-		area.append("\nSkupina: " + group.getID() + "\nCas: " + group.time + "\nUcitel: " + group.getGroupArrayTeachers().get(0).username +  "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
+		area.append("\nSkupina: " + group.getID() + "\nCas: " + group.time + "\nUcitel: " + arrayTeachers.findTeacherByGroup(group.getID()).username +  "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
 	}
 	
 	//		PRINT SCHEDULE DAY		//
@@ -160,15 +161,18 @@ public class Schedule {
 	}
 	
 	//	PRINT TEACHERS SCHEDULE WEEK		//
-	public void printTeachersScheduleWeek(JTextArea area, Teacher teacher) {
+	//arrayGroups.findGroup(i).getGroupArrayTeachers().get(0).username.equals(teacher.username)
+	public void printTeachersScheduleWeek(JTextArea area, Teacher teacher) throws ClassNotFoundException {
 		int counter = 0;
 		Date today = new Date();
 		ArrayList<Group> workList = new ArrayList<Group>();
+		arrayGroups.load();
+		
 		
 		for (int i = 0; i < arrayGroups.getLenght(); i++) {
 			
-			if (inBoundaries(arrayGroups.findGroup(i), today)) {
-				if (arrayGroups.findGroup(i).getGroupArrayTeachers().get(0).username.equals(teacher.username)) {
+			if ((arrayGroups.findGroup(i) != null) && (inBoundaries(arrayGroups.findGroup(i), today))) {
+				if (teacher.getGroup(i) == arrayGroups.findGroup(i).getID()) {
 					workList.add(arrayGroups.findGroup(i));
 					counter++;
 				}	

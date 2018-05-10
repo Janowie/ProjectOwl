@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import src.users.Student;
 
@@ -18,7 +17,7 @@ public class SavingStudents implements Serializable {
 	
 	public SavingStudents() throws ClassNotFoundException {
 		if (fileExists()) {
-			savedStudents = load();
+			load();
 		}
 	}
 	
@@ -31,7 +30,7 @@ public class SavingStudents implements Serializable {
 	}
 	
 	private boolean fileExists() {
-		File f = new File("savedStudents.ser");
+		File f = new File("userData/savedStudents.ser");
 		if(f.exists() && !f.isDirectory()) { 
 		    return true;
 		}
@@ -59,7 +58,7 @@ public class SavingStudents implements Serializable {
 		save();
 	}
 	
-	private void save() {
+	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userData/savedStudents.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);			
@@ -70,24 +69,20 @@ public class SavingStudents implements Serializable {
 		catch (IOException i) {
 			i.printStackTrace();
 		}
-		System.out.println("Saving array saved students.");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Student> load() throws ClassNotFoundException {
-		ArrayList<Student> loadedList = null;
+	public void load() throws ClassNotFoundException {
 		try {
 			FileInputStream fileIn = new FileInputStream("userData/savedStudents.ser");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			loadedList = (ArrayList<Student>) in.readObject();
+			savedStudents = (ArrayList<Student>) in.readObject();
 			in.close();
 			fileIn.close();
 		}
 		catch (IOException i) {
 			i.printStackTrace();
 		}
-		System.out.println("Loading array saved students.");
-		return loadedList;
 	}
 	
 	public void printSavedStudents() {
@@ -97,7 +92,7 @@ public class SavingStudents implements Serializable {
 			}
 		}
 		else {
-			System.out.println("No students");
+			System.out.println("No students to print");
 		}
 	}
 }
