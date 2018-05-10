@@ -25,6 +25,8 @@ public class Login {
 		arrayDirector = new SavingDirector();
 	}
 	
+	//////// hierarchia
+	///////  
 	
 	//		USERS CONTROL		//
 	public int loginMethod(String username, String password) {

@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
+import materials.Homework;
 import saving.SavingDirector;
 import saving.SavingGroups;
 import saving.SavingOfficeWorkers;
@@ -39,6 +40,8 @@ public class Projekt_Owl {
 		SavingGroups savedGroups = new SavingGroups();
 		SavingTeachers savedTeachers = new SavingTeachers();
 		SavingDirector savedDirectors = new SavingDirector();
+		
+		Homework homework1 = new Homework(20, 5, "20.5.2018", 1, "Napis ako sa povie pes.");
 		
 		Schedule schedule = new Schedule();
 

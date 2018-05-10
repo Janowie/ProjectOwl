@@ -21,6 +21,8 @@ public class Group implements java.io.Serializable, Functions {
 	public Date end = new Date();
 	long difference = 0;
 	
+	Teacher teacher;
+	
 	public Group (int grID) throws ClassNotFoundException {
 		ID = grID;
 		arrayGroups.saveGroup(this);
@@ -28,6 +30,10 @@ public class Group implements java.io.Serializable, Functions {
 	
 	public int getID() {
 		return this.ID;
+	}
+	
+	public void addTeacher(Teacher addedTeacher) {
+		teacher = addedTeacher;
 	}
 		
 

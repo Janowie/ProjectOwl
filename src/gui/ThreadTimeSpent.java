@@ -4,7 +4,9 @@ public class ThreadTimeSpent extends Thread {
 	public void run() {
 		int counter = 0;
 		while (true) {
-			System.out.println("Time spent " + counter + " sec");
+			if (counter % 60 == 0) {
+				System.out.println("Time spent " + counter/60 + " min");
+			}
 			counter++;
 			try {
 				Thread.sleep(1000);

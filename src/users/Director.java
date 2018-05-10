@@ -89,4 +89,11 @@ public class Director extends OfficeWorker {
 		}
 	}
 	
+	public void sendMessageOffice(String username, String newMessage) throws ClassNotFoundException {
+		arrayOffice.load();
+		OfficeWorker office = arrayOffice.findOffice(username);
+		office.setMessage(newMessage);
+		arrayOffice.save();
+	}
+	
 }

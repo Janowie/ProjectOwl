@@ -17,6 +17,7 @@ public class OfficeWorker extends User implements Serializable {
 	public SavingGroups arrayGroups = new SavingGroups();
 	SavingTeachers arrayTeachers = new SavingTeachers();
 	SavingStudents arrayStudents = new SavingStudents();
+	private String message = "";
 	
 	int userID = 3;
 	private double salary = 0;
@@ -35,6 +36,25 @@ public class OfficeWorker extends User implements Serializable {
 		arrayStudents = new SavingStudents();
 		arrayTeachers = new SavingTeachers();
 		arrayOffice.saveOffice(this);
+	}
+	
+	public void checkMessage(JTextArea area) {
+		if (message.length() > 0) {
+			area.append(message);
+		}
+		else {
+			area.append("No new tasks.");
+		}
+	}
+	
+	public void markDone(JTextArea area) {
+		message = "";
+		area.setText("");
+		arrayOffice.save();
+	}
+	
+	public void setMessage(String newMessage) {
+		message = newMessage;
 	}
 	
 	public void numberOfStudents(JTextArea area) {

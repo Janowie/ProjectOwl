@@ -1,6 +1,7 @@
 package src.users;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 //import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Date;
 
 import javax.swing.JTextArea;
 
+import materials.Test;
 import saving.SavingGroups;
 import saving.SavingStudents;
 
@@ -17,6 +19,7 @@ public class Student extends User implements Serializable {
 	
 	SavingStudents arrayStudents;
 	SavingGroups arrayGroups;
+	Test test;
 	int groupNum;
 	int userID = 0;
 	
@@ -26,9 +29,16 @@ public class Student extends User implements Serializable {
 		arrayStudents = new SavingStudents();
 		arrayGroups = new SavingGroups();
 		this.setID(arrayStudents.getLenght());
+		test = takeTest();
+		if (test != null) {
+			//printTestDescription();
+			System.out.println("Nasiel sa test.");
+		}
+		
 		arrayStudents.saveStudent(this);
 	}
 	
+
 	public void setGroupID(int i) {
 		groupNum = i;
 	}
@@ -89,6 +99,23 @@ public class Student extends User implements Serializable {
 				"Trieda: " + arrayGroups.findGroup(groupNum).room +
 				"\nCas: " + arrayGroups.findGroup(groupNum).time
 		);
+	}
+	
+	public void numberOfHomework(JTextArea area) {
+		File homework = new File("userMaterials/homework.ser");
+	}
+	
+	private Test takeTest() throws ClassNotFoundException {
+		Test newTest = null;
+		try {
+			newTest = newTest.load();
+		}
+		catch (NullPointerException e) {
+			e.getMessage();
+		}
+		
+		
+		return newTest;
 	}
 	
 	

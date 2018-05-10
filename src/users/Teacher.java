@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
+import javax.swing.JTextArea;
 
+import materials.Homework;
+import materials.Test;
 import saving.SavingTeachers;
 import src.organization.Observer;
 
@@ -66,6 +69,19 @@ public class Teacher extends User implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	public void addHomework(JTextArea area, int max, int min, String date, int num, String zadanie) {
+		Homework newHomework = new Homework(max, min, date, num, zadanie);
+		area.append(
+				"Pridana uloha " + newHomework.getNumber() 
+				+ "\nZadanie:\n" 
+				+ newHomework.getDescription());
+	}
+	
+	public void addTest(JTextArea area, int min, int cislo, String date, String addDescription) {
+		Test newTest = new Test(min, cislo, date, addDescription);
+	}
+
 	
 	
 	

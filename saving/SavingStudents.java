@@ -14,6 +14,7 @@ import src.users.Student;
 @SuppressWarnings("serial")
 public class SavingStudents implements Serializable {
 	private ArrayList<Student>  savedStudents = new ArrayList<Student>();
+	// DOplnit agreegaciu
 	
 	public SavingStudents() throws ClassNotFoundException {
 		if (fileExists()) {
