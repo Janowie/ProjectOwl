@@ -19,8 +19,8 @@ public class Teacher extends User implements Serializable {
 	String IBAN;
 	
 
-	public Teacher(String userFirstName, String userPassword, String userEmailAddres, String Iban) throws ClassNotFoundException {
-		super(userFirstName, userPassword, userEmailAddres);
+	public Teacher(String userFirstName, String userPassword, String Iban) throws ClassNotFoundException {
+		super(userFirstName, userPassword);
 		IBAN = Iban;
 		arrayTeachers = new SavingTeachers();
 		arrayTeachers.saveEmployee(this);
@@ -58,10 +58,10 @@ public class Teacher extends User implements Serializable {
 	    }
 	}
 	
-	public void addStudent(String username, String password, String emailAdress, int IDgroup) throws ClassNotFoundException {
+	@SuppressWarnings("unused")
+	public void addStudent(String username, String password, int IDgroup) throws ClassNotFoundException {
 		try {
-			@SuppressWarnings("unused")
-			Student newStudent = new Student(username,password,emailAdress, IDgroup);
+			Student newStudent = new Student(username,password, IDgroup);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

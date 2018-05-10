@@ -12,8 +12,8 @@ public class Director extends OfficeWorker {
 	int userID = 4;
 	SavingDirector arrayDirectors;
 	
-	public Director(String userFirstName, String newPassword, String userEmailAddres) throws ClassNotFoundException {
-		super(userFirstName, newPassword, userEmailAddres);
+	public Director(String userFirstName, String newPassword) throws ClassNotFoundException {
+		super(userFirstName, newPassword);
 		arrayDirectors = new SavingDirector();
 		directorSave();
 	}
@@ -58,11 +58,7 @@ public class Director extends OfficeWorker {
 	public int getUserID() {
 		return userID;
 	}
-	
-	public String getEmail() {
-		return emailAddress;
-	}
-	
+		
 	public void printTeachers(JTextArea area) throws ClassNotFoundException {
 		SavingTeachers savedTeachers = new SavingTeachers();
 		int io = 0;

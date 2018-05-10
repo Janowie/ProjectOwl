@@ -20,8 +20,8 @@ public class Student extends User implements Serializable {
 	int groupNum;
 	int userID = 0;
 	
-	public Student(String firstName, String newPassword,String emailAddress, int stGroup) throws IOException, ClassNotFoundException {
-		super(firstName, newPassword, emailAddress);
+	public Student(String firstName, String newPassword, int stGroup) throws IOException, ClassNotFoundException {
+		super(firstName, newPassword);
 		groupNum = stGroup;
 		arrayStudents = new SavingStudents();
 		arrayGroups = new SavingGroups();

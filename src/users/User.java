@@ -9,12 +9,10 @@ public abstract class User implements Serializable {
 
 	public String username;
 	private String password;
-	String emailAddress;
 		
-	public User(String userUsername, String newPassword, String userEmailAddres) {
+	public User(String userUsername, String newPassword) {
 		username = userUsername;
 		setPassword(newPassword);
-		emailAddress = userEmailAddres;
 	}
 
 	public String getPassword() {

@@ -32,6 +32,14 @@ public class SavingGroups implements Serializable {
 	}
 	
 	public int getLenght() {
+		if(fileExists()) {
+			try {
+				load();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		return this.savedGroups.size();
 	}
 	

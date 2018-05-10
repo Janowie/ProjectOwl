@@ -4,6 +4,8 @@ import java.text.*;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.JTextArea;
+
 import saving.SavingGroups;
 import saving.SavingOfficeWorkers;
 import saving.SavingStudents;
@@ -26,13 +28,21 @@ public class OfficeWorker extends User implements Serializable {
 		//		   C
 		//			  E
 	
-	public OfficeWorker(String userFirstName, String newPassword, String userEmailAddres) throws ClassNotFoundException {
-		super(userFirstName, newPassword, userEmailAddres);
+	public OfficeWorker(String userFirstName, String newPassword) throws ClassNotFoundException {
+		super(userFirstName, newPassword);
 		arrayOffice = new SavingOfficeWorkers();
 		arrayGroups = new SavingGroups();
 		arrayStudents = new SavingStudents();
 		arrayTeachers = new SavingTeachers();
 		arrayOffice.saveOffice(this);
+	}
+	
+	public void numberOfStudents(JTextArea area) {
+		area.append("Number of students: " + String.valueOf(arrayStudents.getLenght()));
+	}
+	
+	public void numberOfGroups(JTextArea area) {
+		area.append("Number of groups: " + String.valueOf(arrayGroups.getLenght()));
 	}
 	
 	public int getUserID() {
@@ -58,6 +68,7 @@ public class OfficeWorker extends User implements Serializable {
 			arrayTeachers.findTeacher(teacherUsername).salary += 10;
 			arrayTeachers.findTeacher(teacherUsername).notifyAllObservers();
 			arrayTeachers.save();
+			vypis(ID);
 		}
 		else {
 			System.out.println("Zadany ucitel neexistuje.");
@@ -65,9 +76,19 @@ public class OfficeWorker extends User implements Serializable {
 		
 	}
 	
+	private void vypis(int ID) throws ClassNotFoundException {
+		arrayTeachers.load();
+		System.out.println(arrayTeachers.findTeacherByGroup(ID).username + " added to group " + arrayTeachers.findTeacherByGroup(ID).groupTaught);
+	}
+	
 	//		DELETE TEACHER		//
 	
 	public void removeTeacher(int ID, String teacherUsername) throws IOException {
+		try {
+			arrayTeachers.load();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		arrayTeachers.findTeacher(teacherUsername).addGroup(0);
 		arrayTeachers.findTeacher(teacherUsername).salary -= 10;
 		arrayTeachers.findTeacher(teacherUsername).notifyAllObservers();
@@ -110,7 +131,7 @@ public class OfficeWorker extends User implements Serializable {
 	//		ADD DETAILS		//
 	
 	public void addDetails(int ID, String gTime, String gDay, String begTime, int gDuration, String gRoom) throws ClassNotFoundException, IOException, ParseException {
-		arrayGroups = new SavingGroups();
+		arrayGroups.load();
 		
 		arrayGroups.findGroup(ID).time = gTime;
 		arrayGroups.findGroup(ID).day = gDay;
@@ -160,10 +181,6 @@ public class OfficeWorker extends User implements Serializable {
 		arrayGroups.save();
 	}
 
-	public String getEmail() {
-		return emailAddress;
-	}
-	
 	
 	
 }

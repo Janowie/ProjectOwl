@@ -31,9 +31,17 @@ public class Schedule {
 	}
 	
 	
-	private void printGroup(Group group, JTextArea area) {
-		difference = dayLeft(group);
-		area.append("\nSkupina: " + group.getID() + "\nCas: " + group.time + "\nUcitel: " + arrayTeachers.findTeacherByGroup(group.getID()).username +  "\nMiestnost: " + group.room + "\nDen: " + group.day + "\nOstava: " + (difference/604800000+1));
+	private void printGroup(Group group, JTextArea area) {	
+		difference = dayLeft(group);	
+		
+
+			area.append("\nSkupina: " + group.getID() 
+			+ "\nCas: " + group.time 
+			+  "\nMiestnost: " + group.room 
+			+ "\nDen: " + group.day 
+			+ "\nOstava: " + (difference/604800000+1));
+	
+		
 	}
 	
 	//		PRINT SCHEDULE DAY		//
@@ -116,46 +124,50 @@ public class Schedule {
 		return inBoundaries;
 	}
 	
-	private ArrayList<Group> reorderArrayList(ArrayList<Group> unordered) {
-		ArrayList<Group> orderedList = new ArrayList<Group>();
-		int index = 1;
-		int listSize = unordered.size();
+	//private ArrayList<Group> reorderArrayList(ArrayList<Group> unordered) {
+	//	ArrayList<Group> orderedList = new ArrayList<Group>();
+	//	int index = 1;
+	//	int listSize = unordered.size();
 		
-		while (listSize > 0) {
-			for (int i = 0; i < unordered.size(); i++) {
-				if (unordered.get(i).dayOfTheWeek == index) {
-					orderedList.add(unordered.get(i));
-					listSize--;
-				}
-			}
-			index++;
-		}		
+	//	while (listSize > 0) {
+	//		for (int i = 0; i < unordered.size(); i++) {
+	//			if (unordered.get(i).dayOfTheWeek == index) {
+	//				orderedList.add(unordered.get(i));
+	//				listSize--;
+	//			}
+	//		}
+	//		index++;
+	//	}		
 		
-		return orderedList;
-	}
+	//	return orderedList;
+	//}
 	
 	//	PRINT SCHEDULE WEEK		//
-	public void printScheduleWeek(JTextArea area) {
+	public void printScheduleWeek(JTextArea area) throws ClassNotFoundException {
 		int counter = 0;
 		Date today = new Date();
-		ArrayList<Group> workList = new ArrayList<Group>();
+		Group group;
+		arrayGroups.load();
+		//ArrayList<Group> workList = new ArrayList<Group>();
 		
-		for (int i = 0; i < arrayGroups.getLenght(); i++) {
-			
-			if (inBoundaries(arrayGroups.findGroup(i), today)) {
-				workList.add(arrayGroups.findGroup(i));
+		for (int i = 0; i < arrayGroups.getLenght() + 1; i++) {
+			group = arrayGroups.findGroup(i);
+			if((group != null) && (inBoundaries(group, today))) {
+				//workList.add(arrayGroups.findGroup(i));
+				printGroup(group, area);
 				counter++;
 			}
-			if (counter == 0) {
-				System.out.println("Nenasiel som skupinu na dany tyzden.");
-			}	
 		}
 		
-		workList = reorderArrayList(workList);
-		
-		for (int i = 0; i < workList.size(); i++) {
-			printGroup(workList.get(i), area);
+		if (counter == 0) {
+			System.out.println("Nenasiel som skupinu na dany tyzden.");
 		}
+		
+		//workList = reorderArrayList(workList);
+		
+		//for (int i = 0; i < workList.size(); i++) {
+		//	printGroup(workList.get(i), area);
+		//}
 
 		
 	}
@@ -165,7 +177,7 @@ public class Schedule {
 	public void printTeachersScheduleWeek(JTextArea area, Teacher teacher) throws ClassNotFoundException {
 		int counter = 0;
 		Date today = new Date();
-		ArrayList<Group> workList = new ArrayList<Group>();
+		//ArrayList<Group> workList = new ArrayList<Group>();
 		arrayGroups.load();
 		
 		
@@ -173,22 +185,26 @@ public class Schedule {
 			
 			if ((arrayGroups.findGroup(i) != null) && (inBoundaries(arrayGroups.findGroup(i), today))) {
 				if (teacher.getGroup(i) == arrayGroups.findGroup(i).getID()) {
-					workList.add(arrayGroups.findGroup(i));
+					//workList.add(arrayGroups.findGroup(i));
+					System.out.println("nasiel som skupinu s ID: " + arrayGroups.findGroup(i).getID());
+					printGroup(arrayGroups.findGroup(i), area);
 					counter++;
 				}	
 			}
 			
-			if (counter == 0) {
-				System.out.println("Nenasiel som skupinu na dany tyzden.");
-			}	
+			
 		}
 		
-		workList = reorderArrayList(workList);
+		if (counter == 0) {
+			System.out.println("Nenasiel som skupinu na dany tyzden.");
+		}	
 		
-		for (int i = 0; i < workList.size(); i++) {
-			printGroup(workList.get(i), area);
+		//workList = reorderArrayList(workList);
+		
+		//for (int i = 0; i < workList.size(); i++) {
+		//	printGroup(workList.get(i), area);
 			area.append("\n\n");
-		}
+		//}
 
 		
 	}

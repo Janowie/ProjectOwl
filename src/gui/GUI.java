@@ -54,10 +54,9 @@ public class GUI extends JFrame {
 	private JTextField detailDuration;
 	private JTextField detailRoom;
 	private JTextField detailsID;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField addStudentUsername;
+	private JTextField addStudentPassword;
+	private JTextField addStudentGroup;
 	private JTextField begDay;
 	private JTextField directorUserName;
 	private JTextField directorAddMoney;
@@ -148,6 +147,7 @@ public class GUI extends JFrame {
 			
 			
 		//		STUDENT PANEL		//
+			
 		JPanel studentPanel = new JPanel();
 		contentPane.add(studentPanel, "cardStudent");
 		studentPanel.setLayout(null);
@@ -192,12 +192,13 @@ public class GUI extends JFrame {
 			
 		//		TEACHER PANEL		//
 		JPanel teacherPanel = new JPanel();
+		CardLayout teacherCardLayout = new CardLayout(0,0);
 		contentPane.add(teacherPanel, "cardTeacher");
-			teacherPanel.setLayout(new CardLayout(0, 0));
+		teacherPanel.setLayout(teacherCardLayout);
 			//caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		
 		JPanel teacherFrontPanel = new JPanel();
-		teacherPanel.add(teacherFrontPanel, "name_201278910569928");
+		teacherPanel.add(teacherFrontPanel, "teacherFrontPanel");
 		teacherFrontPanel.setLayout(null);
 		
 		JButton btnAddStudent = new JButton("Add student");
@@ -230,7 +231,7 @@ public class GUI extends JFrame {
 				teacherFrontPanel.add(textArea);
 				
 				JPanel teacherAddStudentPanel = new JPanel();
-				teacherPanel.add(teacherAddStudentPanel, "name_201283366059465");
+				teacherPanel.add(teacherAddStudentPanel, "teacherAddStudentPanel");
 				teacherAddStudentPanel.setLayout(null);
 				
 				JLabel lblAddingStudent = new JLabel("ADDING STUDENT");
@@ -238,45 +239,64 @@ public class GUI extends JFrame {
 				lblAddingStudent.setBounds(66, 23, 763, 87);
 				teacherAddStudentPanel.add(lblAddingStudent);
 				
-				textField = new JTextField();
-				textField.setBounds(325, 157, 290, 49);
-				teacherAddStudentPanel.add(textField);
-				textField.setColumns(10);
+				addStudentUsername = new JTextField();
+				addStudentUsername.setBounds(325, 181, 290, 49);
+				teacherAddStudentPanel.add(addStudentUsername);
+				addStudentUsername.setColumns(10);
 				
-				textField_1 = new JTextField();
-				textField_1.setBounds(325, 219, 290, 49);
-				teacherAddStudentPanel.add(textField_1);
-				textField_1.setColumns(10);
-				
-				textField_2 = new JTextField();
-				textField_2.setBounds(325, 281, 290, 49);
-				teacherAddStudentPanel.add(textField_2);
-				textField_2.setColumns(10);
+				addStudentPassword = new JTextField();
+				addStudentPassword.setBounds(325, 243, 290, 49);
+				teacherAddStudentPanel.add(addStudentPassword);
+				addStudentPassword.setColumns(10);
 				
 				JLabel lblUsername = new JLabel("username");
-				lblUsername.setBounds(218, 173, 95, 16);
+				lblUsername.setBounds(218, 197, 95, 16);
 				teacherAddStudentPanel.add(lblUsername);
 				
 				JLabel lblPassword_1 = new JLabel("password");
-				lblPassword_1.setBounds(218, 235, 95, 16);
+				lblPassword_1.setBounds(218, 259, 95, 16);
 				teacherAddStudentPanel.add(lblPassword_1);
 				
-				JLabel lblNewLabel_1 = new JLabel("Email");
-				lblNewLabel_1.setBounds(218, 297, 95, 16);
-				teacherAddStudentPanel.add(lblNewLabel_1);
-				
-				textField_3 = new JTextField();
-				textField_3.setBounds(325, 343, 290, 49);
-				teacherAddStudentPanel.add(textField_3);
-				textField_3.setColumns(10);
+				addStudentGroup = new JTextField();
+				addStudentGroup.setBounds(325, 305, 290, 49);
+				teacherAddStudentPanel.add(addStudentGroup);
+				addStudentGroup.setColumns(10);
 				
 				JLabel lblGroupId = new JLabel("Group ID");
-				lblGroupId.setBounds(218, 359, 95, 16);
+				lblGroupId.setBounds(218, 321, 95, 16);
 				teacherAddStudentPanel.add(lblGroupId);
 				
 				JButton btnSave_1 = new JButton("SAVE");
+				btnSave_1.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (addStudentUsername.getText().indexOf("@") == -1) {
+							try {
+								throw new InvalidName("Not valid name");
+							} catch (InvalidName e) {
+								e.printStackTrace();
+							}  
+						}
+						else {
+							try {
+								teacher[0].addStudent(addStudentUsername.getText(), addStudentPassword.getText(), Integer.parseInt(addStudentGroup.getText()));
+								teacherCardLayout.show(teacherPanel, "teacherFrontPanel");
+							} catch (NumberFormatException | ClassNotFoundException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				});
 				btnSave_1.setBounds(0, 457, 893, 225);
 				teacherAddStudentPanel.add(btnSave_1);
+				
+				JButton btnBack_2 = new JButton("Back");
+				btnBack_2.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						teacherCardLayout.show(teacherPanel, "teacherFrontPanel");
+					}
+				});
+				btnBack_2.setBounds(12, 13, 97, 25);
+				teacherAddStudentPanel.add(btnBack_2);
 				
 				DefaultCaret caret = (DefaultCaret)textArea.getCaret();
 			btnBack.addActionListener(new ActionListener() {
@@ -296,7 +316,11 @@ public class GUI extends JFrame {
 		});
 		btnShowScheduleWeek_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				schedule.printScheduleWeek(textArea);
+				try {
+					schedule.printScheduleWeek(textArea);
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnClearSchedule.addActionListener(new ActionListener() {
@@ -306,7 +330,8 @@ public class GUI extends JFrame {
 		});
 		btnAddStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//teacher[0].addStudent(username, password, emailAdress, IDgroup);
+				System.out.println("nieco tu idem robit");
+				teacherCardLayout.show(teacherPanel, "teacherAddStudentPanel");
 			}
 		});
 		
@@ -447,18 +472,6 @@ public class GUI extends JFrame {
 				btnAddGroupDetails.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						officeCardLayout.show(officePanel, "groupAddDetails");
-						
-						
-						/*if (textFieldGroupID.getText().length() == 0) {
-							try {
-								throw new CustomException("No ID");
-							}
-							catch (CustomException ex)
-							{
-								System.out.println("Caught");
-								System.out.println(ex.getMessage());
-							}
-						}*/
 					}
 				});
 				btnAddGroupDetails.setBounds(475, 234, 153, 82);
@@ -485,6 +498,26 @@ public class GUI extends JFrame {
 				textFieldUsernameOffice.setBounds(563, 354, 229, 32);
 				officePanelFront.add(textFieldUsernameOffice);
 				textFieldUsernameOffice.setColumns(10);
+				
+				JButton btngroups = new JButton("#groups");
+				btngroups.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						officeTArea.setText("");
+						office[0].numberOfGroups(officeTArea);
+					}
+				});
+				btngroups.setBounds(-1, 221, 97, 25);
+				officePanelFront.add(btngroups);
+				
+				JButton btnstudents = new JButton("#students");
+				btnstudents.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						officeTArea.setText("");
+						office[0].numberOfStudents(officeTArea);
+					}
+				});
+				btnstudents.setBounds(-1, 191, 97, 25);
+				officePanelFront.add(btnstudents);
 
 			
 			JPanel groupAddDetails = new JPanel();

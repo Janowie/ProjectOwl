@@ -23,7 +23,6 @@ public class Group implements java.io.Serializable, Functions {
 	
 	public Group (int grID) throws ClassNotFoundException {
 		ID = grID;
-		//arrayGroups.load();
 		arrayGroups.saveGroup(this);
 	}
 	
