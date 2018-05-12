@@ -14,6 +14,11 @@ import src.organization.Observer;
 @SuppressWarnings("serial")
 public class Teacher extends User implements Serializable {
 	
+	/*
+	 * Class uèite¾ rozširuje class User, špecifické metódy
+	 * umoòujú pridáva študentov a testy èi úlohy. 
+	 */
+	
 	int groupTaught = 0;
 	SavingTeachers arrayTeachers;
 	private List<Observer> observers = new ArrayList<Observer>();
@@ -21,7 +26,7 @@ public class Teacher extends User implements Serializable {
 	double salary = 0;
 	String IBAN;
 	
-
+	// konštruktor (super od Usera)
 	public Teacher(String userFirstName, String userPassword, String Iban) throws ClassNotFoundException {
 		super(userFirstName, userPassword);
 		IBAN = Iban;
@@ -29,21 +34,25 @@ public class Teacher extends User implements Serializable {
 		arrayTeachers.saveEmployee(this);
 	}
 	
+	// metóda aktivovaná OfficeWorkerom alebo riadite¾om
 	public void addGroup(int i) {
 		groupTaught = i;
 	}
 	
+	// metóda na získanie skupiny, ktorú danı uèite¾ uèí
 	public int getGroup(int i) {
 		return groupTaught;
 	}
 	
+	// vráti ID uívate¾a
 	public int getUserID() {
 		return this.userID;
 	}
 	
+	// nastaví ID uívate¾a a uloí zoznam uèite¾ov
 	public void setUserID(int newID) {
 		this.userID = newID;
-		arrayTeachers.saveEmployee(this);
+		arrayTeachers.save();
 	}
 	
 	public double getSalary() {

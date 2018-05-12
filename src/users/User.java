@@ -2,7 +2,7 @@ package src.users;
 
 import java.io.Serializable;
 
-//@SuppressWarnings("serial")
+// Základný typ používate¾a z ktorého sa rozvetvuje hierarchia
 
 @SuppressWarnings("serial")
 public abstract class User implements Serializable {
@@ -14,6 +14,8 @@ public abstract class User implements Serializable {
 		username = userUsername;
 		setPassword(newPassword);
 	}
+	
+// Geter a seter na heslo používate¾a
 
 	public String getPassword() {
 		return password;
