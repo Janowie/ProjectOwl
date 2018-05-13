@@ -83,11 +83,7 @@ public class GUI extends JFrame {
 		loginThread.run();
 	}
 
-	/**
-	 * Create the frame.
-	 * @throws IOException 
-	 * @throws ClassNotFoundException 
-	 */
+
 	public GUI() throws IOException, ClassNotFoundException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 921, 737);
@@ -196,7 +192,6 @@ public class GUI extends JFrame {
 		CardLayout teacherCardLayout = new CardLayout(0,0);
 		contentPane.add(teacherPanel, "cardTeacher");
 		teacherPanel.setLayout(teacherCardLayout);
-			//caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		
 		JPanel teacherFrontPanel = new JPanel();
 		teacherPanel.add(teacherFrontPanel, "teacherFrontPanel");
@@ -461,7 +456,6 @@ public class GUI extends JFrame {
 						} catch (NumberFormatException e1) {
 							e1.printStackTrace();
 						} catch (ClassNotFoundException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 					}
@@ -583,13 +577,10 @@ public class GUI extends JFrame {
 					} catch (NumberFormatException e1) {
 						e1.printStackTrace();
 					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					JOptionPane.showMessageDialog(null, "Group " + detailsID.getText() + " saved.");
@@ -750,7 +741,7 @@ public class GUI extends JFrame {
 			directorPanel.add(lblMessageTo);
 			
 			
-			//		ACTION LISTENERS		//
+			//		ACTION LISTENERS LOGIN		//
 			btnLogin.addActionListener(new ActionListener() {
 				Login login;
 				public void actionPerformed(ActionEvent arg0) {

@@ -11,26 +11,29 @@ import saving.SavingTeachers;
 import src.users.Group;
 import src.users.Teacher;
 
-
+/*
+ * Class Schedule sluzi na vypisovanie rozvrhov uzivatelov,
+ * nie je sucastou hierarchie
+ */
 public class Schedule {
 	SavingGroups arrayGroups;
 	SavingTeachers arrayTeachers;
 	long difference = 0;
 
 	
-	//		CONSTRUCTOR		//
+	//	konstruktor, vytvori Objekt ulozenych ucitelov a skupin
 	public Schedule() throws ClassNotFoundException {
 		arrayGroups = new SavingGroups();
 		arrayTeachers = new SavingTeachers();
 	}
 	
-	//		DAYS LEFT		//
+	//	vrati pocet ostavajucich dni trvania skupiny
 	private long dayLeft(Group group) {
 		Date today = new Date();
 		return group.end.getTime() - today.getTime();		
 	}
 	
-	
+	// vypise informacie o skupine
 	private void printGroup(Group group, JTextArea area) {	
 		difference = dayLeft(group);	
 		
@@ -44,7 +47,9 @@ public class Schedule {
 		
 	}
 	
-	//		PRINT SCHEDULE DAY		//
+	/*
+	 * metoda vypise vsetky skupiny, ktore su dane na dany den
+	 */
 	public void printScheduleDay(String string, JTextArea area) throws ClassNotFoundException {
 		int i = 0;
 		int counter = 0;
@@ -69,7 +74,7 @@ public class Schedule {
 		}
 	}	
 	
-	//		PRINT CURRENT WEEK SCHEDULE		//
+	//	z daneho datumu vrati den v tyzdni
 	private int dayOfWeek(Date date) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
@@ -85,6 +90,7 @@ public class Schedule {
 		return date;
 	}
 	
+	// metoda nastavi a vrati datum zaciatku tyzdna
 	private Date boundaryStart(Date date) {
 		Date boundaryStartDate = new Date();
 		int dayOfWeek = dayOfWeek(date);
@@ -98,6 +104,7 @@ public class Schedule {
 		return boundaryStartDate;
 	}
 	
+	// metoda nastavi a vrati datum konca tyzdna
 	private Date boundaryEnd(Date date) {
 		Date boundaryEndDate = new Date();
 		int dayOfWeek = dayOfWeek(date);
@@ -111,6 +118,7 @@ public class Schedule {
 		return boundaryEndDate;
 	}
 	
+	// metoda zisti, ci je dana skupina v nastavenych hraniciach - v danom tyzdni
 	private boolean inBoundaries(Group group, Date today) {
 		boolean inBoundaries = false;
 		
@@ -123,61 +131,31 @@ public class Schedule {
 		
 		return inBoundaries;
 	}
+
 	
-	//private ArrayList<Group> reorderArrayList(ArrayList<Group> unordered) {
-	//	ArrayList<Group> orderedList = new ArrayList<Group>();
-	//	int index = 1;
-	//	int listSize = unordered.size();
-		
-	//	while (listSize > 0) {
-	//		for (int i = 0; i < unordered.size(); i++) {
-	//			if (unordered.get(i).dayOfTheWeek == index) {
-	//				orderedList.add(unordered.get(i));
-	//				listSize--;
-	//			}
-	//		}
-	//		index++;
-	//	}		
-		
-	//	return orderedList;
-	//}
-	
-	//	PRINT SCHEDULE WEEK		//
+	//	metoda vypise vsetky skupiny, ktore su v rozmedzi aktualneho tyzdna 
 	public void printScheduleWeek(JTextArea area) throws ClassNotFoundException {
 		int counter = 0;
 		Date today = new Date();
 		Group group;
 		arrayGroups.load();
-		//ArrayList<Group> workList = new ArrayList<Group>();
 		
 		for (int i = 0; i < arrayGroups.getLenght() + 1; i++) {
 			group = arrayGroups.findGroup(i);
 			if((group != null) && (inBoundaries(group, today))) {
-				//workList.add(arrayGroups.findGroup(i));
 				printGroup(group, area);
 				counter++;
 			}
 		}
-		
-		if (counter == 0) {
-			System.out.println("Nenasiel som skupinu na dany tyzden.");
-		}
-		
-		//workList = reorderArrayList(workList);
-		
-		//for (int i = 0; i < workList.size(); i++) {
-		//	printGroup(workList.get(i), area);
-		//}
+
 
 		
 	}
 	
-	//	PRINT TEACHERS SCHEDULE WEEK		//
-	//arrayGroups.findGroup(i).getGroupArrayTeachers().get(0).username.equals(teacher.username)
+	//	metoda vypise tyzdenny rozvrh ucitela
 	public void printTeachersScheduleWeek(JTextArea area, Teacher teacher) throws ClassNotFoundException {
 		int counter = 0;
 		Date today = new Date();
-		//ArrayList<Group> workList = new ArrayList<Group>();
 		arrayGroups.load();
 		
 		
@@ -185,7 +163,6 @@ public class Schedule {
 			
 			if ((arrayGroups.findGroup(i) != null) && (inBoundaries(arrayGroups.findGroup(i), today))) {
 				if (teacher.getGroup(i) == arrayGroups.findGroup(i).getID()) {
-					//workList.add(arrayGroups.findGroup(i));
 					System.out.println("nasiel som skupinu s ID: " + arrayGroups.findGroup(i).getID());
 					printGroup(arrayGroups.findGroup(i), area);
 					counter++;
@@ -193,22 +170,14 @@ public class Schedule {
 			}
 			
 			
-		}
-		
-		if (counter == 0) {
-			System.out.println("Nenasiel som skupinu na dany tyzden.");
 		}	
-		
-		//workList = reorderArrayList(workList);
-		
-		//for (int i = 0; i < workList.size(); i++) {
-		//	printGroup(workList.get(i), area);
-			area.append("\n\n");
-		//}
+
+		area.append("\n\n");
 
 		
 	}
 	
+//	metoda vypise nasledujuci tyzdenny rozvrh ucitela
 	public void printScheduleNextWeek(JTextArea area) {
 		int counter = 0;
 		Date today = new Date();

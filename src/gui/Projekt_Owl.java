@@ -16,7 +16,9 @@ import src.users.OfficeWorker;
 import src.users.Student;
 import src.users.Teacher;
 
-//import java.util.*;
+/*
+ * Class s mainon. Sluzi najma na rychle vytvorenie prvotnych uzivatelov
+ */
 public class Projekt_Owl {
 	
 	static int number = 0;

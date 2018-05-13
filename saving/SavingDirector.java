@@ -11,17 +11,24 @@ import java.util.ArrayList;
 
 import src.users.Director;
 
-
+/**
+ * Class ktora do arrayListu uklada vsetkych Directorov
+ */
 @SuppressWarnings("serial")
 public class SavingDirector implements Serializable {
 private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 	
+	// konstruktor, nacita zo suboru ak uz subor existuje
 	public SavingDirector() throws ClassNotFoundException {
 		if (fileExists()) {
 			load();
 		}
 	}
-	
+
+	/**
+	 * metoda kontrolujuca existenciu suboru
+	 * @return
+	 */
 	private boolean fileExists() {
 		File f = new File("userData/savedDirectors.ser");
 		if(f.exists() && !f.isDirectory()) { 
@@ -31,11 +38,17 @@ private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 			return false;
 		}
 	}
-	
+
+	/**
+	 * 
+	 * @param i
+	 * @return Directora
+	 */
 	public Director getDirector(int i) {
 		return savedDirector.get(i);
 	}
 	
+	// metoda najde a vrati directora na zaklade jeho mena, inak null
 	public Director findDirector(String string) {	
 		for (int i = 0; i < savedDirector.size(); i++) {
 			if (savedDirector.get(i).username.equals(string)) {
@@ -45,16 +58,19 @@ private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 		return null;
 	}
 	
+	// metoda prida objekt Director do arrayListu a ulozi sa
 	public void saveDirector(Director director) {
 		savedDirector.add(director);
 		save();
 	}
 	
+	// metoda odstrani objekt Director z arrayListu  a ulozi sa
 	public void deleteDirector(Director director) {
 		savedDirector.remove(director);
 		save();
 	}
 	
+	// metoda ulozi objekt SavingDirector
 	private void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userData/savedDirectors.ser");
@@ -69,6 +85,7 @@ private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 		System.out.println("Saving array saved offices.");
 	}
 	
+	// metoda nacita a vrati objekt SavingDirector
 	@SuppressWarnings("unchecked")
 	public void load() throws ClassNotFoundException {
 		try {

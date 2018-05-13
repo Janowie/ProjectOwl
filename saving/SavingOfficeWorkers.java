@@ -11,25 +11,31 @@ import java.util.ArrayList;
 
 import src.users.OfficeWorker;
 
-
+/*
+ * Class ktora do arrayListu uklada vsetkych OfficeWorker
+ */
 @SuppressWarnings("serial")
 public class SavingOfficeWorkers implements Serializable {
 private ArrayList<OfficeWorker>  savedOffice = new ArrayList<OfficeWorker>();
 	
+	//konstruktor, nacita zo suboru ak uz subor existuje
 	public SavingOfficeWorkers() throws ClassNotFoundException {
 		if (fileExists()) {
 			load();
 		}
 	}
 	
+	// metoda vrati objekt OfficeWorker
 	public OfficeWorker getOffice(int i) {
 		return savedOffice.get(i);
 	}
 		
+	// vrati dlzku arrayListu = pocet OfficeWorker
 	public int getLenght() {
 		return this.savedOffice.size();
 	}
 	
+	// metoda kontrolujuca existenciu suboru
 	private boolean fileExists() {
 		File f = new File("userData/savedOfficeWorkers.ser");
 		if(f.exists() && !f.isDirectory()) { 
@@ -40,6 +46,7 @@ private ArrayList<OfficeWorker>  savedOffice = new ArrayList<OfficeWorker>();
 		}
 	}
 	
+	// najde v arrayListe OfficeWorker na zaklade mena a vrati
 	public OfficeWorker findOffice(String string) {	
 		for (int i = 0; i < savedOffice.size(); i++) {
 			if (savedOffice.get(i).username.equals(string)) {
@@ -49,16 +56,19 @@ private ArrayList<OfficeWorker>  savedOffice = new ArrayList<OfficeWorker>();
 		return null;
 	}
 	
+	// metoda prida OfficeWorker skupina do arrayListu  a ulozi sa
 	public void saveOffice(OfficeWorker office) {
 		savedOffice.add(office);
 		save();
 	}
 	
+	// metoda odstrani OfficeWorker skupina z arrayListu  a ulozi sa
 	public void deleteOffice(OfficeWorker office) {
 		savedOffice.remove(office);
 		save();
 	}
 	
+	// metoda ulozi objekt SavingOfficeWorkers
 	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userData/savedOfficeWorkers.ser");
@@ -72,6 +82,7 @@ private ArrayList<OfficeWorker>  savedOffice = new ArrayList<OfficeWorker>();
 		}
 	}
 	
+	// metoda nacita a vrati objekt SavingOfficeWorkers
 	@SuppressWarnings("unchecked")
 	public void load() throws ClassNotFoundException {
 		try {
@@ -86,6 +97,7 @@ private ArrayList<OfficeWorker>  savedOffice = new ArrayList<OfficeWorker>();
 		}
 	}
 	
+	// metoda vypise vsetkych ulozenych OfficeWorkers
 	public void printSavedOffice() {
 		if (savedOffice.size() > 0) {
 			for (int i = 0; i < savedOffice.size(); i++) {

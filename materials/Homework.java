@@ -8,6 +8,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+/**
+ * Class extenduje BasicFile
+ * @author Jan
+ *
+ */
 @SuppressWarnings("serial")
 public class Homework extends BasicFile implements Serializable {
 	private int number;
@@ -15,6 +20,14 @@ public class Homework extends BasicFile implements Serializable {
 	String dueDate;
 	private String description;
 
+	/**
+	 * konstruktor prekonavajuci metodu 
+	 * @param addPoints
+	 * @param addMinPoints
+	 * @param addDueDate
+	 * @param addNumber
+	 * @param addDescription
+	 */
 	public Homework(int addPoints, int addMinPoints, String addDueDate, int addNumber, String addDescription) {
 		super(addPoints, addNumber);
 		minPoints = addMinPoints;
@@ -23,6 +36,9 @@ public class Homework extends BasicFile implements Serializable {
 		save();
 	}	
 	
+	/**
+	 * Ulozenie danej ulohy
+	 */
 	private void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userMaterials/homework" + getNumber() + ".ser");
@@ -36,6 +52,11 @@ public class Homework extends BasicFile implements Serializable {
 		}
 	}
 	
+	/**
+	 * nacitanie danej ulohy
+	 * @return
+	 * @throws ClassNotFoundException
+	 */
 	public Homework load() throws ClassNotFoundException {
 		Homework loaded = null;
 		try {
@@ -52,6 +73,9 @@ public class Homework extends BasicFile implements Serializable {
 		
 	}
 	
+	/** 
+	 * Vymazanie ulohy
+	 */
 	public void deleteFile() {
 		File fileDel = new File("userMaterials/homework" + getNumber() + ".ser");
         if(fileDel.delete())
@@ -64,18 +88,34 @@ public class Homework extends BasicFile implements Serializable {
         }
 	}
 
+	/**
+	 * 
+	 * @return cislo
+	 */
 	public int getNumber() {
 		return number;
 	}
 
+	/**
+	 * set cislo
+	 * @param number
+	 */
 	public void setNumber(int number) {
 		this.number = number;
 	}
 
+	/**
+	 * 
+	 * @return opis
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * nastav opis
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}

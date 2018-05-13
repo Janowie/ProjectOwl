@@ -11,13 +11,14 @@ import materials.Test;
 import saving.SavingTeachers;
 import src.organization.Observer;
 
+/**
+ *  Class ucitel rozsiruje class User, specificke metody
+ *  umoznuju pridavat studentov, testy ci ulohy. 
+ * @author Jan
+ *
+ */
 @SuppressWarnings("serial")
 public class Teacher extends User implements Serializable {
-	
-	/*
-	 * Class uËiteæ rozöiruje class User, öpecifickÈ metÛdy
-	 * umoûÚuj˙ prid·vaù ötudentov a testy Ëi ˙lohy. 
-	 */
 	
 	int groupTaught = 0;
 	SavingTeachers arrayTeachers;
@@ -26,50 +27,86 @@ public class Teacher extends User implements Serializable {
 	double salary = 0;
 	String IBAN;
 	
-	// konötruktor (super od Usera)
+	/**
+	 * konstruktor (super od Usera)
+	 * @param userFirstName
+	 * @param userPassword
+	 * @param Iban
+	 * @throws ClassNotFoundException
+	 */
 	public Teacher(String userFirstName, String userPassword, String Iban) throws ClassNotFoundException {
 		super(userFirstName, userPassword);
 		IBAN = Iban;
 		arrayTeachers = new SavingTeachers();
 		arrayTeachers.saveEmployee(this);
 	}
-	
-	// metÛda aktivovan· OfficeWorkerom alebo riaditeæom
+
+	/**
+	 *  metoda aktivovana OfficeWorkerom alebo riaditelom
+	 * @param i
+	 */
 	public void addGroup(int i) {
 		groupTaught = i;
 	}
 	
-	// metÛda na zÌskanie skupiny, ktor˙ dan˝ uËiteæ uËÌ
+	/**
+	 * metoda na zÌskanie skupiny, ktoru dany ucitel ucÌ
+	 * @param i
+	 * @return
+	 */
 	public int getGroup(int i) {
 		return groupTaught;
 	}
 	
-	// vr·ti ID uûÌvateæa
+	/**
+	 * vrati ID uzivatela
+	 * @return
+	 */
 	public int getUserID() {
 		return this.userID;
 	}
 	
-	// nastavÌ ID uûÌvateæa a uloûÌ zoznam uËiteæov
+	/**
+	 * nastavi ID uzivatela a ulozi zoznam ucitelov
+	 * @param newID
+	 */
 	public void setUserID(int newID) {
 		this.userID = newID;
 		arrayTeachers.save();
 	}
 	
+	/**
+	 * 
+	 * @return velkost vyplaty
+	 */
 	public double getSalary() {
 	    return salary;
 	}	
 
-	// Observers
+	/**
+	 * Observers
+	 * @param observer
+	 */
 	public void attach(Observer observer){
 	    observers.add(observer);		
 	}
 
+	/**
+	 *  upozorni vsetkych observerov na zmenu
+	 */
 	public void notifyAllObservers(){
 	    for (Observer observer : observers) {
 	       observer.update();
 	    }
 	}
 	
+	/**
+	 * metoda vytvora objekt Student 
+	 * @param username
+	 * @param password
+	 * @param IDgroup
+	 * @throws ClassNotFoundException
+	 */
 	@SuppressWarnings("unused")
 	public void addStudent(String username, String password, int IDgroup) throws ClassNotFoundException {
 		try {
@@ -79,6 +116,15 @@ public class Teacher extends User implements Serializable {
 		}
 	}
 	
+	/**
+	 * metodou citel vytvori ulohu pre ziaka
+	 * @param area
+	 * @param max
+	 * @param min
+	 * @param date
+	 * @param num
+	 * @param zadanie
+	 */
 	public void addHomework(JTextArea area, int max, int min, String date, int num, String zadanie) {
 		Homework newHomework = new Homework(max, min, date, num, zadanie);
 		area.append(
@@ -87,6 +133,14 @@ public class Teacher extends User implements Serializable {
 				+ newHomework.getDescription());
 	}
 	
+	/**
+	 * metoda vytvori test pre ziaka
+	 * @param area
+	 * @param min
+	 * @param cislo
+	 * @param date
+	 * @param addDescription
+	 */
 	public void addTest(JTextArea area, int min, int cislo, String date, String addDescription) {
 		Test newTest = new Test(min, cislo, date, addDescription);
 	}

@@ -11,25 +11,31 @@ import java.util.ArrayList;
 
 import src.users.Student;
 
+/*
+ * Class ktora do arrayListu uklada vsetkych studentov
+ */
 @SuppressWarnings("serial")
 public class SavingStudents implements Serializable {
 	private ArrayList<Student>  savedStudents = new ArrayList<Student>();
-	// DOplnit agreegaciu
 	
+	//konstruktor, nacita zo suboru ak uz subor existuje
 	public SavingStudents() throws ClassNotFoundException {
 		if (fileExists()) {
 			load();
 		}
 	}
 	
+	// metoda vrati objekt student
 	public Student getStudent(int i) {
 		return savedStudents.get(i);
 	}
 	
+	// vrati dlzku arrayListu = pocet studentov
 	public int getLenght() {
 		return this.savedStudents.size();
 	}
 	
+	// metoda kontrolujuca existenciu suboru
 	private boolean fileExists() {
 		File f = new File("userData/savedStudents.ser");
 		if(f.exists() && !f.isDirectory()) { 
@@ -40,6 +46,7 @@ public class SavingStudents implements Serializable {
 		}
 	}
 	
+	// najde v arrayListe student na zaklade mena a vrati
 	public Student findStudent(String string) {	
 		for (int i = 0; i < savedStudents.size(); i++) {
 			if (savedStudents.get(i).username.equals(string)) {
@@ -49,16 +56,19 @@ public class SavingStudents implements Serializable {
 		return null;
 	}
 	
+	// metoda prida objekt student do arrayListu  a ulozi sa
 	public void saveStudent(Student student) {
 		savedStudents.add(student);
 		save();
 	}
 	
+	// metoda odstrani objekt student z arrayListu  a ulozi sa
 	public void deleteStudent(Student student) {
 		savedStudents.remove(student);
 		save();
 	}
 	
+	// metoda ulozi objekt SavingStudents
 	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userData/savedStudents.ser");
@@ -72,6 +82,7 @@ public class SavingStudents implements Serializable {
 		}
 	}
 	
+	// metoda nacita a vrati objekt SavingStudents
 	@SuppressWarnings("unchecked")
 	public void load() throws ClassNotFoundException {
 		try {
@@ -86,6 +97,7 @@ public class SavingStudents implements Serializable {
 		}
 	}
 	
+	// metoda vypise vsetkych ulozenych studentov
 	public void printSavedStudents() {
 		if (savedStudents.size() > 0) {
 			for (int i = 0; i < savedStudents.size(); i++) {

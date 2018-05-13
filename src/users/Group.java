@@ -5,7 +5,11 @@ import java.util.*;
 import saving.SavingGroups;
 import src.organization.Functions;
 
-
+/**
+ * Class Group nestoji v ziadnej hierarchii
+ * @author Jan
+ *
+ */
 @SuppressWarnings("serial")
 public class Group implements java.io.Serializable, Functions {
 	
@@ -23,15 +27,28 @@ public class Group implements java.io.Serializable, Functions {
 	
 	Teacher teacher;
 	
+	/**
+	 * konstruktor pre Group, vytvorenu skupinu ulozi
+	 * @param grID
+	 * @throws ClassNotFoundException
+	 */
 	public Group (int grID) throws ClassNotFoundException {
 		ID = grID;
 		arrayGroups.saveGroup(this);
 	}
-	
+		
+	/**
+	 * 
+	 * @return ID skupiny
+	 */
 	public int getID() {
 		return this.ID;
 	}
 	
+	/**
+	 * do skupiny prida ucitela - agregacia
+	 * @param addedTeacher
+	 */
 	public void addTeacher(Teacher addedTeacher) {
 		teacher = addedTeacher;
 	}

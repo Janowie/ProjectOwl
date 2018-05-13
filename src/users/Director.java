@@ -7,27 +7,50 @@ import saving.SavingOfficeWorkers;
 import saving.SavingStudents;
 import saving.SavingTeachers;
 
+
+/**
+ * Class rozsiruje OfficeWorker
+ * @author Jan
+ *
+ */
 @SuppressWarnings("serial")
 public class Director extends OfficeWorker {
 	int userID = 4;
 	SavingDirector arrayDirectors;
 	
+	/**
+	 * konstruktor, ulozi Directora
+	 * @param userFirstName
+	 * @param newPassword
+	 * @throws ClassNotFoundException
+	 */
 	public Director(String userFirstName, String newPassword) throws ClassNotFoundException {
 		super(userFirstName, newPassword);
 		arrayDirectors = new SavingDirector();
 		directorSave();
 	}
 	
-	//	SAVE THIS		//
+	/**
+	 * metoda ulozi Directora
+	 */
 	private void directorSave() {
 		arrayDirectors.saveDirector(this);
 	}
 	
-	//	DELETE THIS		//
+	/**
+	 * mazanie Directora
+	 */
 	public void deletePerson() {
 		arrayDirectors.deleteDirector(this);
 	}
 	
+	/**
+	 * Metoda zmeni plat ucitela, upozorni observer
+	 * @param username
+	 * @param addedSalary
+	 * @param area
+	 * @throws ClassNotFoundException
+	 */
 	public void updateSalaryTeacher(String username, double addedSalary, JTextArea area) throws ClassNotFoundException {
 		SavingTeachers savedTeachers = new SavingTeachers();
 		area.setText("");
@@ -41,7 +64,14 @@ public class Director extends OfficeWorker {
 		    teacher.notifyAllObservers();
 		}	
 	}
-	
+
+	/**
+	 * Metoda zmeni plat OfficeWorkera
+	 * @param username
+	 * @param addedSalary
+	 * @param area
+	 * @throws ClassNotFoundException
+	 */
 	public void updateSalaryOffice(String username, double addedSalary, JTextArea area) throws ClassNotFoundException {
 		SavingOfficeWorkers savedOffice = new SavingOfficeWorkers();
 		area.setText("");
@@ -55,10 +85,18 @@ public class Director extends OfficeWorker {
 		}	
 	}
 	
+	/**
+	 * @return ID
+	 */
 	public int getUserID() {
 		return userID;
 	}
 		
+	/**
+	 * vypise ucitelov a ich plat
+	 * @param area
+	 * @throws ClassNotFoundException
+	 */
 	public void printTeachers(JTextArea area) throws ClassNotFoundException {
 		SavingTeachers savedTeachers = new SavingTeachers();
 		int io = 0;
@@ -69,6 +107,11 @@ public class Director extends OfficeWorker {
 		}
 	}
 	
+	/**
+	 * vypise ulozenych OfficeWork a ich plat
+	 * @param area
+	 * @throws ClassNotFoundException
+	 */
 	public void printOffice(JTextArea area) throws ClassNotFoundException {
 		SavingOfficeWorkers savedOffice = new SavingOfficeWorkers();
 		int io = 0;
@@ -79,6 +122,11 @@ public class Director extends OfficeWorker {
 		}
 	}
 	
+	/**
+	 *  Vypise vsetkych studentov a skupinu v ktorej su
+	 * @param area
+	 * @throws ClassNotFoundException
+	 */
 	public void printStudents(JTextArea area) throws ClassNotFoundException {
 		SavingStudents savedStudents = new SavingStudents();
 		int io = 0;
@@ -89,6 +137,12 @@ public class Director extends OfficeWorker {
 		}
 	}
 	
+	/**
+	 * zadanie tasku pre OfficeWork
+	 * @param username
+	 * @param newMessage
+	 * @throws ClassNotFoundException
+	 */
 	public void sendMessageOffice(String username, String newMessage) throws ClassNotFoundException {
 		arrayOffice.load();
 		OfficeWorker office = arrayOffice.findOffice(username);

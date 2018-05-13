@@ -1,6 +1,7 @@
 package src.gui;
 
 import saving.SavingDirector;
+
 import saving.SavingOfficeWorkers;
 import saving.SavingStudents;
 import saving.SavingTeachers;
@@ -8,6 +9,10 @@ import src.users.Director;
 import src.users.OfficeWorker;
 import src.users.Student;
 import src.users.Teacher;
+
+/*
+ * Class login sluzi na prihlasovanie konkretneho pouzivatela
+ */
 
 public class Login {
 	
@@ -18,6 +23,7 @@ public class Login {
 	
 	int ID;
 	
+	// konstruktor vytvori objekty so vsetkymi vytvorenymi uzivatelmi
 	public Login() throws ClassNotFoundException {
 		arrayStudents = new SavingStudents();
 		arrayTeachers = new SavingTeachers();
@@ -25,10 +31,11 @@ public class Login {
 		arrayDirector = new SavingDirector();
 	}
 	
-	//////// hierarchia
-	///////  
 	
-	//		USERS CONTROL		//
+	/*
+	 * metoda prechadza ArrayListami s uzivatelmi a porovnava meno a heslo s danym uzivatelom.
+	 *  Ak najde zhodu, vrati cislo reprezentujuce typ pouzivatela.
+	 */
 	public int loginMethod(String username, String password) {
 		int type = -1;
 		int counter = 0;
@@ -100,6 +107,7 @@ public class Login {
 		
 	}
 	
+	// Metody vracajuce daneho uzivatela
 	public Student returnStudent() {	
 		return arrayStudents.getStudent(ID);
 	}

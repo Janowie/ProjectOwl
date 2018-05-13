@@ -1,5 +1,8 @@
 package src.gui;
 
+/*
+ * class pre thread, pocita pocet minut stravenych pouzivanim aplikacie
+ */
 public class ThreadTimeSpent extends Thread {
 	public void run() {
 		int counter = 0;

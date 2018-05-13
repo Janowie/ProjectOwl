@@ -11,6 +11,12 @@ import saving.SavingOfficeWorkers;
 import saving.SavingStudents;
 import saving.SavingTeachers;
 
+
+/**
+ * Class OfficeWorker
+ * @author Jan
+ *
+ */
 @SuppressWarnings("serial")
 public class OfficeWorker extends User implements Serializable {
 	SavingOfficeWorkers arrayOffice = new SavingOfficeWorkers();
@@ -22,13 +28,12 @@ public class OfficeWorker extends User implements Serializable {
 	int userID = 3;
 	private double salary = 0;
 	
-		// O
-		//	F
-		//	  F
-		//		I
-		//		   C
-		//			  E
-	
+	/**
+	 * konstruktor prekonany
+	 * @param userFirstName
+	 * @param newPassword
+	 * @throws ClassNotFoundException
+	 */
 	public OfficeWorker(String userFirstName, String newPassword) throws ClassNotFoundException {
 		super(userFirstName, newPassword);
 		arrayOffice = new SavingOfficeWorkers();
@@ -38,6 +43,10 @@ public class OfficeWorker extends User implements Serializable {
 		arrayOffice.saveOffice(this);
 	}
 	
+	/**
+	 *  skontroluje ci danemu pracovnikovi nezanechal riaditel ulohu
+	 * @param area
+	 */
 	public void checkMessage(JTextArea area) {
 		if (message.length() > 0) {
 			area.append(message);
@@ -47,40 +56,71 @@ public class OfficeWorker extends User implements Serializable {
 		}
 	}
 	
+	/**
+	 * zadany task uznaci za splneny
+	 * @param area
+	 */
 	public void markDone(JTextArea area) {
 		message = "";
 		area.setText("");
 		arrayOffice.save();
 	}
 	
+	/**
+	 * nastavi task pre officeWorkera
+	 * @param newMessage
+	 */
 	public void setMessage(String newMessage) {
 		message = newMessage;
 	}
 	
+	/**
+	 * vypise pocet studentov
+	 * @param area
+	 */
 	public void numberOfStudents(JTextArea area) {
 		area.append("Number of students: " + String.valueOf(arrayStudents.getLenght()));
 	}
 	
+	/**
+	 * vypise pocet skupin
+	 * @param area
+	 */
 	public void numberOfGroups(JTextArea area) {
 		area.append("Number of groups: " + String.valueOf(arrayGroups.getLenght()));
 	}
 	
+	/**
+	 * 
+	 * @return vrati ID pouzivatela
+	 */
 	public int getUserID() {
 		return userID;
 	}
 	
+	/**
+	 * 
+	 * @return vrati vyplatu
+	 */
 	public double getSalary() {
 		return salary;
 	}
 	
+	/**
+	 * nastavi vyplatu, ulozi uzivatela
+	 */
 	public void setSalary(double amount) {
 		salary = salary + amount;
 		arrayOffice.save();
 	}
 
-		
-	//		ADD TEACHER	TO GROUP	//
-	
+	/**
+	 * prida ucitela do skupiny
+	 * @param ID
+	 * @param teacherUsername
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void setTeacher(int ID, String teacherUsername) throws IOException, ClassNotFoundException {
 		arrayTeachers.load();
 		if (arrayTeachers.findTeacher(teacherUsername) != null) {
@@ -96,13 +136,22 @@ public class OfficeWorker extends User implements Serializable {
 		
 	}
 	
+	/**
+	 * Vypise meno ucitela a skupinu, do ktorej bol priradeny
+	 * @param ID
+	 * @throws ClassNotFoundException
+	 */
 	private void vypis(int ID) throws ClassNotFoundException {
 		arrayTeachers.load();
 		System.out.println(arrayTeachers.findTeacherByGroup(ID).username + " added to group " + arrayTeachers.findTeacherByGroup(ID).groupTaught);
 	}
 	
-	//		DELETE TEACHER		//
-	
+	/**
+	 * vymazat ucitela	
+	 * @param ID
+	 * @param teacherUsername
+	 * @throws IOException
+	 */
 	public void removeTeacher(int ID, String teacherUsername) throws IOException {
 		try {
 			arrayTeachers.load();
@@ -115,25 +164,35 @@ public class OfficeWorker extends User implements Serializable {
 		arrayTeachers.save();
 	}
 	
-	//		ADD STUDENT		//
-	
+	/**
+	 * prida studenta do skupiny
+	 * @param username
+	 * @param ID
+	 * @throws ClassNotFoundException
+	 */
 	public void addStudent(String username, int ID) throws ClassNotFoundException {
 		arrayStudents.load();
 		arrayStudents.findStudent(username).setGroupID(ID);
 		arrayStudents.save();
 	}
-	
-	//		DELETE STUDENT		//
-	
+			
+	/**
+	 * odstrani studenta zo skupiny
+	 * @param username
+	 * @param ID
+	 * @throws ClassNotFoundException
+	 */
 	public void removeStudent(String username, int ID) throws ClassNotFoundException {
 		arrayStudents.load();
 		arrayStudents.findStudent(username).setGroupID(0);
 		arrayStudents.save();
 	}
 	
-	
-	//	SET THE DAY OF WEEK		//
-	
+	/**
+	 * Premeni string s dnom v skupine na cislo
+	 * @param group
+	 * @return
+	 */
 	private int setDayOfWeek(Group group) {
 		String[] strDays = new String[] {"Pondelok", "Utorok", "Streda", "Stvrtok",
 		        "Piatok", "Sobota",  "Nedela" };
@@ -147,9 +206,19 @@ public class OfficeWorker extends User implements Serializable {
 		return dayOfWeek;
 	
 	}
-		
-	//		ADD DETAILS		//
-	
+			
+	/**
+	 * prida detaily k skupine
+	 * @param ID skupiny
+	 * @param gTime cas hodin
+	 * @param gDay den v tyzdni
+	 * @param begTime datum zaciatku kurzu
+	 * @param gDuration trvanie kurzu v tyzdnoch
+	 * @param gRoom 
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void addDetails(int ID, String gTime, String gDay, String begTime, int gDuration, String gRoom) throws ClassNotFoundException, IOException, ParseException {
 		arrayGroups.load();
 		
@@ -163,9 +232,12 @@ public class OfficeWorker extends User implements Serializable {
 		arrayGroups.save();
 	}
 	
-	//		SET DATE		//	
+	/**
+	 * Lambda vyraz vrati pocet dni zo zadaneho poctu tyzdnov
+	 */
 	WorkTime weeksToDays = (WorkTime & Serializable)(int week) -> week * 7;
 	
+	// vrati datum konca trvania kurzu
 	private Date duration(Date beginningDate, int week) throws ParseException {
 		Date endDate = new Date();
 		Calendar c = Calendar.getInstance();
@@ -178,6 +250,14 @@ public class OfficeWorker extends User implements Serializable {
 		return endDate;
 	}
 	
+	/**
+	 * na zaklade stringu nastavi zaciatok kurzu na datum, ulozi skupinu
+	 * @param ID skupiny
+	 * @param timeInput cas vo formate dd.mm.yyyy
+	 * @param duration dlzka trvania v tyzdnoch
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	private void setDate(int ID, String timeInput, int duration) throws IOException, ParseException {
 		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 		Date beginningDate = null;
@@ -188,15 +268,12 @@ public class OfficeWorker extends User implements Serializable {
 			arrayGroups.findGroup(ID).beginning = beginningDate;
 		}
 		catch (ParseException e) {
-			System.out.println("Invalid date format");
 		}
 		
 		endDate = duration(beginningDate, duration);
 		
 		arrayGroups.findGroup(ID).end = endDate;
 
-		//String beg = format.format(beginningDate);
-		//String end = format.format(endDate);
 		
 		arrayGroups.save();
 	}
@@ -210,7 +287,11 @@ public class OfficeWorker extends User implements Serializable {
 
 
 
-
+/**
+ * interface k lambda vyrazu
+ * @author Jan
+ *
+ */
 interface WorkTime {
 	int perform(int week);
 }

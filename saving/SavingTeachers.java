@@ -11,16 +11,21 @@ import java.util.ArrayList;
 
 import src.users.Teacher;
 
+/*
+ * Class ktora do arrayListu uklada vsetkych ucitelov
+ */
 @SuppressWarnings("serial")
 public class SavingTeachers implements Serializable {
 private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 	
+	//konstruktor, nacita zo suboru ak uz subor existuje
 	public SavingTeachers() throws ClassNotFoundException {
 		if (fileExists()) {
 			load();
 		}
 	}
 	
+	// metoda kontrolujuca existenciu suboru
 	private boolean fileExists() {
 		File f = new File("userData/savedTeachers.ser");
 		if(f.exists() && !f.isDirectory()) { 
@@ -31,6 +36,7 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 		}
 	}
 	
+	// najde v arrayListe ucitela na zaklade ID skupiny a vrati
 	public Teacher findTeacherByGroup(int ID) {
 		for (int i = 0; i < savedTeachers.size(); i++) {
 			if (savedTeachers.get(i).getGroup(i) == ID) {
@@ -40,6 +46,7 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 		return null;
 	}
 	
+	// najde v arrayListe ucitela na zaklade mena a vrati
 	public Teacher findTeacher(String string) {	
 		for (int i = 0; i < savedTeachers.size(); i++) {
 			if (savedTeachers.get(i).username.equals(string)) {
@@ -49,20 +56,24 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 		return null;
 	}
 	
+	// metoda vrati objekt ucitel
 	public Teacher getTeacher(int i) {
 		return savedTeachers.get(i);
 	}
 	
+	// metoda prida objekt ucitel do arrayListu  a ulozi sa
 	public void saveEmployee(Teacher teacher) {
 		savedTeachers.add(teacher);
 		save();
 	}
 	
+	// metoda odstrani ucitel skupina z arrayListu  a ulozi sa
 	public void deleteEmployee(Teacher teacher) {
 		savedTeachers.remove(teacher);
 		save();
 	}
 	
+	// metoda ulozi objekt SavingTeachers
 	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userData/savedTeachers.ser");
@@ -76,6 +87,7 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 		}
 	}
 	
+	// metoda nacita a vrati objekt SavingTeachers zo suboru
 	@SuppressWarnings("unchecked")
 	public void load() throws ClassNotFoundException {
 		try {

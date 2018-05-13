@@ -11,12 +11,24 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Druhy class extendujuci BasicFile
+ * @author Jan
+ *
+ */
 public class Test extends BasicFile implements Serializable {
 	
 	Date date = new Date();
 	boolean openTest = false;
 	String description;
 
+	/**
+	 * konstruktor
+	 * @param addPoints
+	 * @param addNumber
+	 * @param addDate
+	 * @param addDescription
+	 */
 	public Test(int addPoints, int addNumber, String addDate, String addDescription) {
 		super(addPoints, addNumber);
 		date = setDate(addDate);
@@ -24,6 +36,11 @@ public class Test extends BasicFile implements Serializable {
 		save();
 	}
 	
+	/**
+	 * nastavi a vrati datum na zaklade vstupneho stringu
+	 * @param s
+	 * @return
+	 */
 	private Date setDate(String s) {
 		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 		Date date = null;
@@ -38,7 +55,11 @@ public class Test extends BasicFile implements Serializable {
 		return date;
 	}
 
-	
+	/**
+	 * metoda otvori - ukaze test ak su splnene podmienky
+	 * @param newDate
+	 * @return
+	 */
 	public boolean openTest(Date newDate) {
 		Date today = new Date();
 		if (today.compareTo(newDate) == 0) {
@@ -48,6 +69,9 @@ public class Test extends BasicFile implements Serializable {
 			return false;
 	}
 	
+	/**
+	 * ulozenie testu
+	 */
 	private void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userMaterials/test" + number + ".ser");
@@ -61,6 +85,11 @@ public class Test extends BasicFile implements Serializable {
 		}
 	}
 	
+	/**
+	 * naciteanie a vratenie testu ak existuje, inak null
+	 * @return
+	 * @throws ClassNotFoundException
+	 */
 	public Test load() throws ClassNotFoundException {
 		Test loaded = null;
 		try {
@@ -77,6 +106,9 @@ public class Test extends BasicFile implements Serializable {
 		
 	}
 	
+	/**
+	 * vymazanie suboru s testom
+	 */
 	public void deleteFile() {
 		File fileDel = new File("userMaterials/test" + number + ".ser");
         if(fileDel.delete())
