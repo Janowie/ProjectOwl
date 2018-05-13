@@ -16,8 +16,10 @@ import src.users.OfficeWorker;
 import src.users.Student;
 import src.users.Teacher;
 
-/*
+/**
  * Class s mainon. Sluzi najma na rychle vytvorenie prvotnych uzivatelov
+ * @author Jan
+ *
  */
 public class Projekt_Owl {
 	

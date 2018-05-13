@@ -3,7 +3,6 @@ package src.users;
 import java.util.*;
 
 import saving.SavingGroups;
-import src.organization.Functions;
 
 /**
  * Class Group nestoji v ziadnej hierarchii
@@ -11,7 +10,7 @@ import src.organization.Functions;
  *
  */
 @SuppressWarnings("serial")
-public class Group implements java.io.Serializable, Functions {
+public class Group implements java.io.Serializable {
 	
 	SavingGroups arrayGroups = new SavingGroups();	
 	

@@ -11,21 +11,29 @@ import java.util.ArrayList;
 
 import src.users.Group;
 
-/*
+/**
  * Class ktora do arrayListu uklada vsetkych skupin
+ * @author Jan
+ *
  */
 @SuppressWarnings("serial")
 public class SavingGroups implements Serializable {
 	private ArrayList<Group>  savedGroups = new ArrayList<Group>();
-	
-	// konstruktor, nacita zo suboru ak uz subor existuje
+
+	/**
+	 * konstruktor, nacita zo suboru ak uz subor existuje
+	 * @throws ClassNotFoundException
+	 */
 	public SavingGroups() throws ClassNotFoundException {
 		if (fileExists()) {
 			load();
 		}
 	}
-	
-	// metoda kontrolujuca existenciu suboru
+
+	/**
+	 * metoda kontrolujuca existenciu suboru
+	 * @return true / false
+	 */
 	private boolean fileExists() {
 		File f = new File("userData/savedGroups.ser");
 		if(f.exists() && !f.isDirectory()) { 
@@ -35,8 +43,11 @@ public class SavingGroups implements Serializable {
 			return false;
 		}
 	}
-	
-	// metoda vrati skupinu
+
+	/**
+	 * metoda vrati skupinu
+	 * @return
+	 */
 	public int getLenght() {
 		if(fileExists()) {
 			try {
@@ -48,8 +59,12 @@ public class SavingGroups implements Serializable {
 		
 		return this.savedGroups.size();
 	}
-	
-	// metoda najde a vrati skupinu na zaklade jej ID, inak null
+
+	/**
+	 * metoda najde a vrati skupinu na zaklade jej ID, inak null
+	 * @param ID
+	 * @return
+	 */
 	public Group findGroup(int ID) {	
 		for (int i = 0; i < savedGroups.size(); i++) {
 			if (ID == savedGroups.get(i).getID()) {
@@ -61,20 +76,28 @@ public class SavingGroups implements Serializable {
 		}
 		return null;
 	}
-	
-	// metoda prida objekt skupina do arrayListu  a ulozi sa
+
+	/**
+	 * metoda prida objekt skupina do arrayListu  a ulozi sa
+	 * @param group
+	 */
 	public void saveGroup(Group group) {
 		savedGroups.add(group);
 		save();
 	}
-	
-	// metoda odstrani objekt skupina z arrayListu  a ulozi sa
+
+	/**
+	 * metoda odstrani objekt skupina z arrayListu  a ulozi sa
+	 * @param group
+	 */
 	public void deleteGroup(Group group) {
 		savedGroups.remove(group);
 		save();
 	}
-	
-	// metoda ulozi objekt SavingGroups
+
+	/**
+	 * metoda ulozi objekt SavingGroups
+	 */
 	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userData/savedGroups.ser");
@@ -87,8 +110,11 @@ public class SavingGroups implements Serializable {
 			i.printStackTrace();
 		}
 	}
-	
-	// metoda nacita a vrati objekt SavingGroups
+
+	/**
+	 * metoda nacita a vrati objekt SavingGroups
+	 * @throws ClassNotFoundException
+	 */
 	@SuppressWarnings("unchecked")
 	public void load() throws ClassNotFoundException {
 		try {
@@ -103,6 +129,9 @@ public class SavingGroups implements Serializable {
 		}
 	}
 	
+	/**
+	 * pomocna funkcie pre vypis do konzoly
+	 */
 	public void printSavedGroups() {
 		if (savedGroups.size() > 0) {
 			for (int i = 0; i < savedGroups.size(); i++) {

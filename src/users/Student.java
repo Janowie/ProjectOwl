@@ -44,9 +44,6 @@ public class Student extends User implements Serializable {
 		arrayGroups = new SavingGroups();
 		this.setID(arrayStudents.getLenght());
 		test = takeTest();
-		if (test != null) {
-			printTestDescription();
-		}
 		
 		arrayStudents.saveStudent(this);
 	}

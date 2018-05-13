@@ -11,21 +11,29 @@ import java.util.ArrayList;
 
 import src.users.Teacher;
 
-/*
+/**
  * Class ktora do arrayListu uklada vsetkych ucitelov
+ * @author Jan
+ *
  */
 @SuppressWarnings("serial")
 public class SavingTeachers implements Serializable {
 private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 	
-	//konstruktor, nacita zo suboru ak uz subor existuje
+	/**
+	 * konstruktor, nacita zo suboru ak uz subor existuje
+	 * @throws ClassNotFoundException
+	 */
 	public SavingTeachers() throws ClassNotFoundException {
 		if (fileExists()) {
 			load();
 		}
 	}
 	
-	// metoda kontrolujuca existenciu suboru
+	/**
+	 * metoda kontrolujuca existenciu suboru
+	 * @return true / false
+	 */
 	private boolean fileExists() {
 		File f = new File("userData/savedTeachers.ser");
 		if(f.exists() && !f.isDirectory()) { 
@@ -36,7 +44,11 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 		}
 	}
 	
-	// najde v arrayListe ucitela na zaklade ID skupiny a vrati
+	/**
+	 * najde v arrayListe ucitela na zaklade ID skupiny a vrati
+	 * @param ID
+	 * @return
+	 */
 	public Teacher findTeacherByGroup(int ID) {
 		for (int i = 0; i < savedTeachers.size(); i++) {
 			if (savedTeachers.get(i).getGroup(i) == ID) {
@@ -45,8 +57,12 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 		}
 		return null;
 	}
-	
-	// najde v arrayListe ucitela na zaklade mena a vrati
+
+	/**
+	 * najde v arrayListe ucitela na zaklade mena a vrati
+	 * @param string
+	 * @return
+	 */
 	public Teacher findTeacher(String string) {	
 		for (int i = 0; i < savedTeachers.size(); i++) {
 			if (savedTeachers.get(i).username.equals(string)) {
@@ -56,24 +72,36 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 		return null;
 	}
 	
-	// metoda vrati objekt ucitel
+	/**
+	 * metoda vrati objekt ucitel podla poradie v arrayListe
+	 * @param i
+	 * @return
+	 */
 	public Teacher getTeacher(int i) {
 		return savedTeachers.get(i);
 	}
 	
-	// metoda prida objekt ucitel do arrayListu  a ulozi sa
+	/**
+	 * metoda prida objekt ucitel do arrayListu  a ulozi sa
+	 * @param teacher
+	 */
 	public void saveEmployee(Teacher teacher) {
 		savedTeachers.add(teacher);
 		save();
 	}
 	
-	// metoda odstrani ucitel skupina z arrayListu  a ulozi sa
+	/**
+	 * metoda odstrani ucitel skupina z arrayListu  a ulozi sa
+	 * @param teacher
+	 */
 	public void deleteEmployee(Teacher teacher) {
 		savedTeachers.remove(teacher);
 		save();
 	}
 	
-	// metoda ulozi objekt SavingTeachers
+	/**
+	 * metoda ulozi objekt SavingTeachers
+	 */
 	public void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userData/savedTeachers.ser");
@@ -86,8 +114,11 @@ private ArrayList<Teacher>  savedTeachers = new ArrayList<Teacher>();
 			i.printStackTrace();
 		}
 	}
-	
-	// metoda nacita a vrati objekt SavingTeachers zo suboru
+
+	/**
+	 * metoda nacita a vrati objekt SavingTeachers zo suboru
+	 * @throws ClassNotFoundException
+	 */
 	@SuppressWarnings("unchecked")
 	public void load() throws ClassNotFoundException {
 		try {

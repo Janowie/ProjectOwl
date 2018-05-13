@@ -17,8 +17,11 @@ import src.users.Director;
 @SuppressWarnings("serial")
 public class SavingDirector implements Serializable {
 private ArrayList<Director>  savedDirector = new ArrayList<Director>();
-	
-	// konstruktor, nacita zo suboru ak uz subor existuje
+
+	/**
+	 * konstruktor, nacita zo suboru ak uz subor existuje
+	 * @throws ClassNotFoundException
+	 */
 	public SavingDirector() throws ClassNotFoundException {
 		if (fileExists()) {
 			load();
@@ -47,8 +50,12 @@ private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 	public Director getDirector(int i) {
 		return savedDirector.get(i);
 	}
-	
-	// metoda najde a vrati directora na zaklade jeho mena, inak null
+
+	/**
+	 * metoda najde a vrati directora na zaklade jeho mena, inak null
+	 * @param string
+	 * @return
+	 */
 	public Director findDirector(String string) {	
 		for (int i = 0; i < savedDirector.size(); i++) {
 			if (savedDirector.get(i).username.equals(string)) {
@@ -57,20 +64,28 @@ private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 		}
 		return null;
 	}
-	
-	// metoda prida objekt Director do arrayListu a ulozi sa
+
+	/**
+	 * metoda prida objekt Director do arrayListu a ulozi sa
+	 * @param director
+	 */
 	public void saveDirector(Director director) {
 		savedDirector.add(director);
 		save();
 	}
-	
-	// metoda odstrani objekt Director z arrayListu  a ulozi sa
+
+	/**
+	 * metoda odstrani objekt Director z arrayListu  a ulozi sa
+	 * @param director
+	 */
 	public void deleteDirector(Director director) {
 		savedDirector.remove(director);
 		save();
 	}
-	
-	// metoda ulozi objekt SavingDirector
+
+	/**
+	 * metoda ulozi objekt SavingDirector
+	 */
 	private void save() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("userData/savedDirectors.ser");
@@ -84,8 +99,11 @@ private ArrayList<Director>  savedDirector = new ArrayList<Director>();
 		}
 		System.out.println("Saving array saved offices.");
 	}
-	
-	// metoda nacita a vrati objekt SavingDirector
+
+	/**
+	 * metoda nacita a vrati objekt SavingDirector
+	 * @throws ClassNotFoundException
+	 */
 	@SuppressWarnings("unchecked")
 	public void load() throws ClassNotFoundException {
 		try {

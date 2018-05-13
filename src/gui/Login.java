@@ -10,10 +10,11 @@ import src.users.OfficeWorker;
 import src.users.Student;
 import src.users.Teacher;
 
-/*
+/**
  * Class login sluzi na prihlasovanie konkretneho pouzivatela
+ * @author Jan
+ *
  */
-
 public class Login {
 	
 	SavingStudents arrayStudents;
@@ -23,18 +24,23 @@ public class Login {
 	
 	int ID;
 	
-	// konstruktor vytvori objekty so vsetkymi vytvorenymi uzivatelmi
+	/**
+	 * konstruktor vytvori objekty so vsetkymi vytvorenymi uzivatelmi
+	 * @throws ClassNotFoundException
+	 */
 	public Login() throws ClassNotFoundException {
 		arrayStudents = new SavingStudents();
 		arrayTeachers = new SavingTeachers();
 		arrayOffice = new SavingOfficeWorkers();
 		arrayDirector = new SavingDirector();
 	}
-	
-	
-	/*
+
+	/**
 	 * metoda prechadza ArrayListami s uzivatelmi a porovnava meno a heslo s danym uzivatelom.
-	 *  Ak najde zhodu, vrati cislo reprezentujuce typ pouzivatela.
+	 * Ak najde zhodu, vrati cislo reprezentujuce typ pouzivatela.
+	 * @param username
+	 * @param password
+	 * @return
 	 */
 	public int loginMethod(String username, String password) {
 		int type = -1;
@@ -107,7 +113,10 @@ public class Login {
 		
 	}
 	
-	// Metody vracajuce daneho uzivatela
+	/**
+	 * Metody vracajuce daneho uzivatela
+	 * @return
+	 */
 	public Student returnStudent() {	
 		return arrayStudents.getStudent(ID);
 	}

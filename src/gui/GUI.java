@@ -1,22 +1,18 @@
-package src.gui;
+ package src.gui;
 
 import src.organization.Schedule;
-import src.organization.SpecificTeacherObserver;
 import src.users.Director;
 import src.users.Group;
 import src.users.OfficeWorker;
 import src.users.Student;
 import src.users.Teacher;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
-
-import saving.SavingGroups;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -30,14 +26,14 @@ import java.text.ParseException;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JTextPane;
 import javax.swing.JTextArea;
-import java.awt.GridLayout;
-import javax.swing.JTree;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 
+/**
+ * GUI
+ * @author Jan
+ *
+ */
 public class GUI extends JFrame {
 
 	
@@ -90,104 +86,107 @@ public class GUI extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(cardLayout); // IMPORTANT
+		contentPane.setLayout(cardLayout);
 		JScrollPane scroll;
-		
-		// Users
+
+		/**
+		 * Users
+		 */
 		final Student[] student = {null};
 		final Teacher[] teacher = {null};
 		final OfficeWorker[] office = {null};
 		final Director[] director = {null};
 		
-		// Other
+		/**
+		 * Dalsie premenne
+		 */
 		Date today = new Date();
 		Schedule schedule = new Schedule();
-		
-		
-		//		LOGIN PANEL		//
+
+		/**
+		 * LOGIN PANEL
+		 */
 		JPanel login = new JPanel();
 		contentPane.add(login, "login");
 		login.setLayout(null);
 		
 			
 			
-			JButton btnLogin = new JButton("LOGIN");			
+		JButton btnLogin = new JButton("LOGIN");			
 			
-			btnLogin.setFont(new Font("Vineta BT", Font.PLAIN, 15));
-			btnLogin.setBounds(382, 253, 116, 39);
-			login.add(btnLogin);
+		btnLogin.setFont(new Font("Vineta BT", Font.PLAIN, 15));
+		btnLogin.setBounds(382, 253, 116, 39);
+		login.add(btnLogin);
 			
-			JLabel lblLogin = new JLabel("OWL");
-			lblLogin.setBounds(342, 49, 196, 107);
-			login.add(lblLogin);
-			lblLogin.setFont(new Font("Vineta BT", Font.PLAIN, 50));
+		JLabel lblLogin = new JLabel("OWL");
+		lblLogin.setBounds(342, 49, 196, 107);
+		login.add(lblLogin);
+		lblLogin.setFont(new Font("Vineta BT", Font.PLAIN, 50));
 			
-			JLabel lblPassword = new JLabel("password");
-			lblPassword.setBounds(266, 221, 89, 16);
-			login.add(lblPassword);
+		JLabel lblPassword = new JLabel("password");
+		lblPassword.setBounds(266, 221, 89, 16);
+		login.add(lblPassword);
 			
-			JLabel lblUserName = new JLabel("username");
-			lblUserName.setBounds(266, 186, 95, 16);
-			login.add(lblUserName);
+		JLabel lblUserName = new JLabel("username");
+		lblUserName.setBounds(266, 186, 95, 16);
+		login.add(lblUserName);
+		
+		textFieldUsername = new JTextField();
+		textFieldUsername.setBounds(382, 183, 116, 22);
+		login.add(textFieldUsername);
+		textFieldUsername.setColumns(10);
 			
-			textFieldUsername = new JTextField();
-			textFieldUsername.setBounds(382, 183, 116, 22);
-			login.add(textFieldUsername);
-			textFieldUsername.setColumns(10);
-			
-			password = new JTextField();
-			password.setText("heslo1");
-			password.setBounds(382, 218, 116, 22);
-			login.add(password);
-			password.setColumns(10);
-			
-			
-			
-		//		STUDENT PANEL		//
-			
+		password = new JTextField();
+		password.setText("heslo1");
+		password.setBounds(382, 218, 116, 22);
+		login.add(password);
+		password.setColumns(10);
+
+		/**
+		 * 	STUDENT PANEL
+		 */
 		JPanel studentPanel = new JPanel();
 		contentPane.add(studentPanel, "cardStudent");
 		studentPanel.setLayout(null);
 		
 
-			JTextArea txtrSchedule = new JTextArea();
-			txtrSchedule.setBounds(214, 135, 639, 471);
-			studentPanel.add(txtrSchedule);
+		JTextArea txtrSchedule = new JTextArea();
+		txtrSchedule.setBounds(214, 135, 639, 471);
+		studentPanel.add(txtrSchedule);
 		
-			JButton logoutButton = new JButton("LOGOUT");
-			logoutButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					txtrSchedule.setText("");
-					cardLayout.show(contentPane, "login");
+		JButton logoutButton = new JButton("LOGOUT");
+		logoutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				txtrSchedule.setText("");
+				cardLayout.show(contentPane, "login");
+			}
+		});
+		logoutButton.setBounds(12, 13, 122, 25);
+		studentPanel.add(logoutButton);
+			
+			
+		JLabel lblStudent = new JLabel("STUDENT");
+		lblStudent.setFont(new Font("Vineta BT", Font.PLAIN, 50));
+		lblStudent.setBounds(239, 39, 454, 60);
+		studentPanel.add(lblStudent);
+			
+		JButton btnShowSchedule = new JButton("Show schedule");
+		btnShowSchedule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+				
+					student[0].printScheduleWeek(txtrSchedule, today);
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
 				}
-			});
-			logoutButton.setBounds(12, 13, 122, 25);
-			studentPanel.add(logoutButton);
-			
-			
-			JLabel lblStudent = new JLabel("STUDENT");
-			lblStudent.setFont(new Font("Vineta BT", Font.PLAIN, 50));
-			lblStudent.setBounds(239, 39, 454, 60);
-			studentPanel.add(lblStudent);
-			
-			JButton btnShowSchedule = new JButton("Show schedule");
-			btnShowSchedule.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-					
-						student[0].printScheduleWeek(txtrSchedule, today);
-					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			});
-			btnShowSchedule.setBounds(29, 135, 149, 25);
-			studentPanel.add(btnShowSchedule);
-		
-			
-			
-		//		TEACHER PANEL		//
+			}
+		});
+		btnShowSchedule.setBounds(29, 135, 149, 25);
+		studentPanel.add(btnShowSchedule);
+
+		/**
+		 * TEACHER PANEL
+		 */
 		JPanel teacherPanel = new JPanel();
 		CardLayout teacherCardLayout = new CardLayout(0,0);
 		contentPane.add(teacherPanel, "cardTeacher");
@@ -218,89 +217,89 @@ public class GUI extends JFrame {
 		btnShowScheduleWeek.setBounds(68, 147, 139, 25);
 		teacherFrontPanel.add(btnShowScheduleWeek);
 		
-			JButton btnBack = new JButton("LOGOUT");
-			btnBack.setBounds(12, 13, 117, 25);
-			teacherFrontPanel.add(btnBack);
+		JButton btnBack = new JButton("LOGOUT");
+		btnBack.setBounds(12, 13, 117, 25);
+		teacherFrontPanel.add(btnBack);
 			
-				JTextArea textArea = new JTextArea();
-				textArea.setBounds(245, 113, 585, 540);
-				teacherFrontPanel.add(textArea);
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(245, 113, 585, 540);
+		teacherFrontPanel.add(textArea);
+			
+		JPanel teacherAddStudentPanel = new JPanel();
+		teacherPanel.add(teacherAddStudentPanel, "teacherAddStudentPanel");
+		teacherAddStudentPanel.setLayout(null);
 				
-				JPanel teacherAddStudentPanel = new JPanel();
-				teacherPanel.add(teacherAddStudentPanel, "teacherAddStudentPanel");
-				teacherAddStudentPanel.setLayout(null);
+		JLabel lblAddingStudent = new JLabel("ADDING STUDENT");
+		lblAddingStudent.setFont(new Font("Vineta BT", Font.PLAIN, 50));
+		lblAddingStudent.setBounds(66, 23, 763, 87);
+		teacherAddStudentPanel.add(lblAddingStudent);
 				
-				JLabel lblAddingStudent = new JLabel("ADDING STUDENT");
-				lblAddingStudent.setFont(new Font("Vineta BT", Font.PLAIN, 50));
-				lblAddingStudent.setBounds(66, 23, 763, 87);
-				teacherAddStudentPanel.add(lblAddingStudent);
+		addStudentUsername = new JTextField();
+		addStudentUsername.setBounds(325, 181, 290, 49);
+		teacherAddStudentPanel.add(addStudentUsername);
+		addStudentUsername.setColumns(10);
 				
-				addStudentUsername = new JTextField();
-				addStudentUsername.setBounds(325, 181, 290, 49);
-				teacherAddStudentPanel.add(addStudentUsername);
-				addStudentUsername.setColumns(10);
+		addStudentPassword = new JTextField();
+		addStudentPassword.setBounds(325, 243, 290, 49);
+		teacherAddStudentPanel.add(addStudentPassword);
+		addStudentPassword.setColumns(10);
 				
-				addStudentPassword = new JTextField();
-				addStudentPassword.setBounds(325, 243, 290, 49);
-				teacherAddStudentPanel.add(addStudentPassword);
-				addStudentPassword.setColumns(10);
+		JLabel lblUsername = new JLabel("username");
+		lblUsername.setBounds(218, 197, 95, 16);
+		teacherAddStudentPanel.add(lblUsername);
 				
-				JLabel lblUsername = new JLabel("username");
-				lblUsername.setBounds(218, 197, 95, 16);
-				teacherAddStudentPanel.add(lblUsername);
+		JLabel lblPassword_1 = new JLabel("password");
+		lblPassword_1.setBounds(218, 259, 95, 16);
+		teacherAddStudentPanel.add(lblPassword_1);
 				
-				JLabel lblPassword_1 = new JLabel("password");
-				lblPassword_1.setBounds(218, 259, 95, 16);
-				teacherAddStudentPanel.add(lblPassword_1);
+		addStudentGroup = new JTextField();
+		addStudentGroup.setBounds(325, 305, 290, 49);
+		teacherAddStudentPanel.add(addStudentGroup);
+		addStudentGroup.setColumns(10);
 				
-				addStudentGroup = new JTextField();
-				addStudentGroup.setBounds(325, 305, 290, 49);
-				teacherAddStudentPanel.add(addStudentGroup);
-				addStudentGroup.setColumns(10);
+		JLabel lblGroupId = new JLabel("Group ID");
+		lblGroupId.setBounds(218, 321, 95, 16);
+		teacherAddStudentPanel.add(lblGroupId);
 				
-				JLabel lblGroupId = new JLabel("Group ID");
-				lblGroupId.setBounds(218, 321, 95, 16);
-				teacherAddStudentPanel.add(lblGroupId);
-				
-				JButton btnSave_1 = new JButton("SAVE");
-				btnSave_1.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						if (addStudentUsername.getText().indexOf("@") == -1) {
-							try {
-								throw new InvalidName("Not valid name");
-							} catch (InvalidName e) {
-								e.printStackTrace();
-							}  
-						}
-						else {
-							try {
-								teacher[0].addStudent(addStudentUsername.getText(), addStudentPassword.getText(), Integer.parseInt(addStudentGroup.getText()));
-								teacherCardLayout.show(teacherPanel, "teacherFrontPanel");
-							} catch (NumberFormatException | ClassNotFoundException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				});
-				btnSave_1.setBounds(0, 457, 893, 225);
-				teacherAddStudentPanel.add(btnSave_1);
-				
-				JButton btnBack_2 = new JButton("Back");
-				btnBack_2.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						teacherCardLayout.show(teacherPanel, "teacherFrontPanel");
-					}
-				});
-				btnBack_2.setBounds(12, 13, 97, 25);
-				teacherAddStudentPanel.add(btnBack_2);
-				
-				DefaultCaret caret = (DefaultCaret)textArea.getCaret();
-			btnBack.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					textArea.setText("");
-					cardLayout.show(contentPane, "login");
+		JButton btnSave_1 = new JButton("SAVE");
+		btnSave_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (addStudentUsername.getText().indexOf("@") == -1) {
+					try {
+						throw new InvalidName("Not valid name");
+					} catch (InvalidName e) {
+						e.printStackTrace();
+					}  
 				}
-			});
+				else {
+					try {
+						teacher[0].addStudent(addStudentUsername.getText(), addStudentPassword.getText(), Integer.parseInt(addStudentGroup.getText()));
+						teacherCardLayout.show(teacherPanel, "teacherFrontPanel");
+					} catch (NumberFormatException | ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		btnSave_1.setBounds(0, 457, 893, 225);
+		teacherAddStudentPanel.add(btnSave_1);
+				
+		JButton btnBack_2 = new JButton("Back");
+		btnBack_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				teacherCardLayout.show(teacherPanel, "teacherFrontPanel");
+			}
+		});
+		btnBack_2.setBounds(12, 13, 97, 25);
+		teacherAddStudentPanel.add(btnBack_2);
+				
+		DefaultCaret caret = (DefaultCaret)textArea.getCaret();
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textArea.setText("");
+				cardLayout.show(contentPane, "login");
+			}
+		});
 		btnShowScheduleWeek.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -330,108 +329,107 @@ public class GUI extends JFrame {
 				teacherCardLayout.show(teacherPanel, "teacherAddStudentPanel");
 			}
 		});
-		
-			
-		
-		//		OFFICE PANEL		//
+
+		/**
+		 * OFFICE PANEL
+		 */
 		JPanel officePanel = new JPanel();
 		CardLayout officeCardLayout = new CardLayout(0, 0); 
 		contentPane.add(officePanel, "cardOffice");
 		officePanel.setLayout(officeCardLayout);
 		
-			JPanel officePanelFront = new JPanel();
-			officePanel.add(officePanelFront, "cardOfficeFront");
-			officePanelFront.setLayout(null);
+		JPanel officePanelFront = new JPanel();
+		officePanel.add(officePanelFront, "cardOfficeFront");
+		officePanelFront.setLayout(null);
 			
-				JTextArea officeTArea = new JTextArea();
-				officeTArea.setBounds(512, 354, 355, 144);
-				officePanelFront.add(officeTArea);
+		JTextArea officeTArea = new JTextArea();
+		officeTArea.setBounds(512, 354, 355, 144);
+		officePanelFront.add(officeTArea);
 			
-				JButton btnBack_1 = new JButton("LOGOUT");
-				btnBack_1.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						cardLayout.show(contentPane, "login");
-						officeTArea.setText("");						
-					}
-				});
-				btnBack_1.setBounds(12, 13, 119, 25);
-				officePanelFront.add(btnBack_1);
+		JButton btnBack_1 = new JButton("LOGOUT");
+		btnBack_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(contentPane, "login");
+				officeTArea.setText("");						
+			}
+		});
+		btnBack_1.setBounds(12, 13, 119, 25);
+		officePanelFront.add(btnBack_1);
+			
+		textFieldGroupID = new JTextField();
+		textFieldGroupID.setBounds(150, 260, 97, 32);
+		officePanelFront.add(textFieldGroupID);
+		textFieldGroupID.setColumns(10);
 				
-				textFieldGroupID = new JTextField();
-				textFieldGroupID.setBounds(150, 260, 97, 32);
-				officePanelFront.add(textFieldGroupID);
-				textFieldGroupID.setColumns(10);
+		JLabel lblGroupid = new JLabel("GroupID:");
+		lblGroupid.setBounds(150, 231, 56, 16);
+		officePanelFront.add(lblGroupid);
 				
-				JLabel lblGroupid = new JLabel("GroupID:");
-				lblGroupid.setBounds(150, 231, 56, 16);
-				officePanelFront.add(lblGroupid);
+		textFieldGroupID2 = new JTextField();
+		textFieldGroupID2.setBounds(153, 354, 91, 32);
+		officePanelFront.add(textFieldGroupID2);
+		textFieldGroupID2.setColumns(10);
 				
-				textFieldGroupID2 = new JTextField();
-				textFieldGroupID2.setBounds(153, 354, 91, 32);
-				officePanelFront.add(textFieldGroupID2);
-				textFieldGroupID2.setColumns(10);
-				
-				JButton btnNewButton_1 = new JButton("Add student to group");
-				btnNewButton_1.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						try {
-							office[0].addStudent(textFieldUsernameOffice.getText(), Integer.parseInt(textFieldGroupID2.getText()));
-							officeTArea.append("Student added to group.");
-						} catch (NumberFormatException e) {
-							e.printStackTrace();
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
-						}
-					}
-				});
-				btnNewButton_1.setBounds(147, 399, 153, 43);
-				officePanelFront.add(btnNewButton_1);
+		JButton btnNewButton_1 = new JButton("Add student to group");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					office[0].addStudent(textFieldUsernameOffice.getText(), Integer.parseInt(textFieldGroupID2.getText()));
+					officeTArea.append("Student added to group.");
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_1.setBounds(147, 399, 153, 43);
+		officePanelFront.add(btnNewButton_1);
 				
 				
-				JButton btnAddTeacherTo = new JButton("Add teacher to group");
-				btnAddTeacherTo.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						try {
-							office[0].setTeacher(Integer.parseInt(textFieldGroupID2.getText()), textFieldUsernameOffice.getText());
-							officeTArea.append("Teacher added to group.");
-						} catch (NumberFormatException | IOException e1) {
-							e1.printStackTrace();
-						} catch (ClassNotFoundException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-				});
-				btnAddTeacherTo.setBounds(150, 455, 153, 43);
-				officePanelFront.add(btnAddTeacherTo);
+		JButton btnAddTeacherTo = new JButton("Add teacher to group");
+		btnAddTeacherTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					office[0].setTeacher(Integer.parseInt(textFieldGroupID2.getText()), textFieldUsernameOffice.getText());
+					officeTArea.append("Teacher added to group.");
+				} catch (NumberFormatException | IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnAddTeacherTo.setBounds(150, 455, 153, 43);
+		officePanelFront.add(btnAddTeacherTo);
 				
-				JButton btnDeleteGroup = new JButton("Delete group");
-				btnDeleteGroup.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						int groupID = Integer.parseInt(textFieldGroupID.getText());
-						office[0].arrayGroups.deleteGroup(office[0].arrayGroups.findGroup(groupID));
-					}
-				});
-				btnDeleteGroup.setBounds(408, 255, 113, 43);
-				officePanelFront.add(btnDeleteGroup);
+		JButton btnDeleteGroup = new JButton("Delete group");
+		btnDeleteGroup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int groupID = Integer.parseInt(textFieldGroupID.getText());
+				office[0].arrayGroups.deleteGroup(office[0].arrayGroups.findGroup(groupID));
+			}
+		});
+		btnDeleteGroup.setBounds(408, 255, 113, 43);
+		officePanelFront.add(btnDeleteGroup);
 				
-				JButton btnCreateGroup = new JButton("Create group");
-				btnCreateGroup.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						Group newGroup = null;
-						try {
-							newGroup = new Group(Integer.parseInt(textFieldGroupID.getText()));
-							officeTArea.append("Group created.");
-						} 							
-						catch (NumberFormatException e) {
-							e.printStackTrace();
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
-						}
-					}
-				});
-				btnCreateGroup.setBounds(259, 255, 135, 43);
-				officePanelFront.add(btnCreateGroup);
+		JButton btnCreateGroup = new JButton("Create group");
+		btnCreateGroup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Group newGroup = null;
+				try {
+					newGroup = new Group(Integer.parseInt(textFieldGroupID.getText()));
+					officeTArea.append("Group created.");
+				} 							
+				catch (NumberFormatException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnCreateGroup.setBounds(259, 255, 135, 43);
+		officePanelFront.add(btnCreateGroup);
 				
 				JButton btnDeleteGroupTeacher = new JButton("Delete group teacher");
 				btnDeleteGroupTeacher.addActionListener(new ActionListener() {
@@ -739,9 +737,10 @@ public class GUI extends JFrame {
 			JLabel lblMessageTo = new JLabel("Give task to:");
 			lblMessageTo.setBounds(245, 341, 116, 16);
 			directorPanel.add(lblMessageTo);
-			
-			
-			//		ACTION LISTENERS LOGIN		//
+
+			/**
+			 * ACTION LISTENERS LOGIN
+			 */
 			btnLogin.addActionListener(new ActionListener() {
 				Login login;
 				public void actionPerformed(ActionEvent arg0) {
